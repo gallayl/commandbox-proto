@@ -28,40 +28,85 @@ interface Hit {
   secondaryAction?: JSX.Element;
 }
 
+const createHitsForRoute = (
+  path: string,
+  icon: { type: iconType; name: string } = {
+    type: iconType.materialui,
+    name: "insert_drive_file"
+  }
+) => {
+  const segments = path.split("/");
+  const secondaryAction = (
+    <IconButton
+      title="Open in new window"
+      onClick={ev => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        alert(
+          "Congratulations! You've triggered the secondary action successfully!"
+        );
+      }}
+    >
+      <Icon iconName="open_in_new" type={iconType.materialui} />
+    </IconButton>
+  );
+  const lastSegment = segments[segments.length - 1];
+  return [
+    {
+      primaryText: lastSegment,
+      secondaryText: path,
+      icon: <Icon iconName={icon.name} type={icon.type} />,
+      secondaryAction
+    },
+    ...segments.slice(0, segments.length - 2).map(
+      (_s, index) =>
+        ({
+          primaryText: _s,
+          secondaryText: segments.slice(0, index + 1).join("/"),
+          icon: <Icon iconName="folder" />,
+          secondaryAction
+        } as Hit)
+    )
+  ] as Hit[];
+};
+
 const hits: Hit[] = [
   {
     primaryText: "?",
-    secondaryText: "Help",
-    icon: <Icon iconName="help" type={iconType.materialui} />,
-    additionalComponent: (
-      <div style={{ display: "block", width: "100%" }}>ÉN VAGYOK A HELP</div>
-    )
+    secondaryText: "ÉN LESZEK A HELP. Gratulálok hogy megnyitottál",
+    icon: <Icon iconName="help" type={iconType.materialui} />
   },
   {
-    primaryText: "alma",
-    secondaryText: "Root/Workspaces/DocLib2/AlmaCollection/alma.txt",
-    icon: <Icon iconName="insert_drive_file" type={iconType.materialui} />,
-    secondaryAction: (
-      <IconButton
-        title="Open in new window"
-        onClick={ev => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          alert(
-            "Congratulations! You've triggered the secondary action successfully!"
-          );
-        }}
-      >
-        <Icon iconName="open_in_new" type={iconType.materialui} />
-      </IconButton>
-    )
+    primaryText: "TypeIs: InTree:",
+    secondaryText:
+      "Egy content query-t kezdtél el gépelni ami szintén működni fog és örülünk.",
+    icon: <Icon iconName="find_in_page" type={iconType.materialui} />
   },
-  {
-    primaryText: "KÖRTE",
-    secondaryText: "Root/Workspaces/Tasks/Monday",
-    icon: <Icon iconName="insert_drive_file" />
-  }
-];
+  ...createHitsForRoute("Root", { type: iconType.materialui, name: "home" }),
+  ...createHitsForRoute("Root/IMS", {
+    type: iconType.materialui,
+    name: "group_work"
+  }),
+  ...createHitsForRoute("Root/IMS/Builtin/Portal/Admin", {
+    type: iconType.materialui,
+    name: "person"
+  }),
+  ...createHitsForRoute("Root/IMS/Builtin/Portal/Maros", {
+    type: iconType.materialui,
+    name: "person"
+  }),
+  ...createHitsForRoute("Root/System/Settings/PortalSettings.settings", {
+    type: iconType.materialui,
+    name: "code"
+  }),
+  ...createHitsForRoute("Root/Workspaces/Document/Almafa/Alma.txt"),
+  ...createHitsForRoute("Root/Workspaces/Document/Almafa/Idared.psd"),
+  ...createHitsForRoute("Root/Workspaces/Document/Almafa/Birsalma.xls"),
+  ...createHitsForRoute("Root/Workspaces/Document/Almafa/Jonatánka.txt")
+].filter(
+  (a, index, arr) =>
+    arr.findIndex(v => a.primaryText === v.primaryText) === index
+);
 
 const renderSuggestion = (
   suggestion: Hit,
@@ -125,8 +170,9 @@ function renderInputComponent(inputProps: InputProps<Hit>) {
     <TextField
       fullWidth
       variant="outlined"
-      style={{ backgroundColor: "rgba(255,255,255,.4)" }}
+      style={{ backgroundColor: "rgba(255,255,255,.10)" }}
       InputProps={{
+        style: { color: "white" },
         inputRef: node => {
           ref(node);
           inputRef(node);
@@ -141,6 +187,7 @@ function renderInputComponent(inputProps: InputProps<Hit>) {
 
 const getSuggestions = (value: string) => {
   const inputValue = value.trim().toLowerCase();
+  const normalizedInputValue = inputValue.replace(/[^\w\s]/gi, "");
   const inputLength = inputValue.length;
 
   return inputLength === 0
@@ -170,32 +217,59 @@ const getSuggestions = (value: string) => {
           )
         }
       ]
-    : hits.filter(
-        hit =>
-          hit.primaryText.toLowerCase().includes(inputValue) ||
-          hit.secondaryText.toLowerCase().includes(inputValue)
-      );
+    : hits
+        .filter(
+          hit =>
+            hit.primaryText.toLowerCase().includes(inputValue) ||
+            hit.secondaryText.toLowerCase().includes(inputValue)
+        )
+        .map(hit => {
+          return {
+            ...hit,
+            value:
+              +(
+                hit.primaryText
+                  .toLowerCase()
+                  .match(new RegExp(normalizedInputValue, "g")) || []
+              ).length +
+              (
+                hit.secondaryText
+                  .toLowerCase()
+                  .match(new RegExp(normalizedInputValue, "g")) || []
+              ).length +
+              (hit.primaryText.toLowerCase() === inputValue ? 100 : 0) +
+              (hit.secondaryText.toLowerCase() === inputValue ? 100 : 0)
+          };
+        })
+        .sort((a, b) => {
+          if (a.value < b.value) {
+            return 1;
+          }
+          if (a.value > b.value) {
+            return -1;
+          }
+          return 0;
+        });
 };
 
 const getSuggestionValue = (suggestion: Hit) => suggestion.primaryText;
 
 export class CommandBox extends React.Component<
-  { onSelect: (value: string) => void },
+  { onDismiss: () => void; search: string },
   CommandBoxState
 > {
-  public state: CommandBoxState = { value: "", suggestions: [] };
+  public state: CommandBoxState = { value: this.props.search, suggestions: [] };
 
   public onChange = (
     _event: React.SyntheticEvent,
     change: { newValue: string; method: "click" | "type" | "enter" }
   ) => {
-    console.log(change.method);
     if (change.method === "click" || change.method === "enter") {
       alert(`Congratulation! You've selected '${change.newValue}'`);
       this.setState({
         value: ""
       });
-      this.props.onSelect(change.newValue);
+      this.props.onDismiss();
     } else {
       this.setState({
         value: change.newValue
@@ -216,7 +290,7 @@ export class CommandBox extends React.Component<
   };
 
   public handleSubmit = (ev: React.KeyboardEvent) => {
-    if (ev.key === "enter") {
+    if (ev.key === "Enter") {
       this.onChange(ev, { newValue: this.state.value, method: "enter" });
     }
   };
@@ -233,10 +307,10 @@ export class CommandBox extends React.Component<
     const inputProps: InputProps<Hit> = {
       placeholder: "Type '?' for help",
       value,
-      autofocus: true,
+      autoFocus: true,
       onChange: this.onChange,
       id: "CommandBoxInput",
-      onkeydown: (ev: React.KeyboardEvent) => this.handleSubmit(ev)
+      onKeyUp: (ev: React.KeyboardEvent) => this.handleSubmit(ev)
     };
 
     return (
