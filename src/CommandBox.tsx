@@ -2,6 +2,7 @@ import React from "react";
 import Autosuggest, { InputProps } from "react-autosuggest";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
+import maros from "./maros.png";
 import {
   TextField,
   List,
@@ -30,7 +31,7 @@ interface Hit {
 
 const createHitsForRoute = (
   path: string,
-  icon: { type: iconType; name: string } = {
+  icon: { type: iconType; name: string; icon?: JSX.Element } = {
     type: iconType.materialui,
     name: "insert_drive_file"
   }
@@ -55,7 +56,7 @@ const createHitsForRoute = (
     {
       primaryText: lastSegment,
       secondaryText: path,
-      icon: <Icon iconName={icon.name} type={icon.type} />,
+      icon: icon.icon || <Icon iconName={icon.name} type={icon.type} />,
       secondaryAction
     },
     ...segments.slice(0, segments.length - 2).map(
@@ -77,15 +78,20 @@ const hits: Hit[] = [
     icon: <Icon iconName="help" type={iconType.materialui} />
   },
   {
+    primaryText: ">",
+    secondaryText: "ÉN LESZEK A Command Palette. Gratulálok hogy megnyitottál",
+    icon: <Icon iconName="thumb_up_alt" type={iconType.materialui} />
+  },
+  {
     primaryText: "TypeIs: InTree:",
     secondaryText:
       "Egy content query-t kezdtél el gépelni ami szintén működni fog és örülünk.",
     icon: <Icon iconName="find_in_page" type={iconType.materialui} />
   },
-  ...createHitsForRoute("Root", { type: iconType.materialui, name: "home" }),
+  ...createHitsForRoute("Root", { type: iconType.materialui, name: "public" }),
   ...createHitsForRoute("Root/IMS", {
     type: iconType.materialui,
-    name: "group_work"
+    name: "domain"
   }),
   ...createHitsForRoute("Root/IMS/Builtin/Portal/Admin", {
     type: iconType.materialui,
@@ -93,7 +99,28 @@ const hits: Hit[] = [
   }),
   ...createHitsForRoute("Root/IMS/Builtin/Portal/Maros", {
     type: iconType.materialui,
-    name: "person"
+    name: "person",
+    icon: (
+      <div
+        style={{
+          overflow: "hidden",
+          borderRadius: "50%",
+          width: "24px",
+          height: "24px",
+          boxShadow: "0px 0px 8px black"
+        }}
+      >
+        <div
+          style={{
+            marginLeft: "2em",
+            display: "flex",
+            flexDirection: "row-reverse"
+          }}
+        >
+          <img src={maros} style={{ height: "30px" }} />
+        </div>
+      </div>
+    )
   }),
   ...createHitsForRoute("Root/System/Settings/PortalSettings.settings", {
     type: iconType.materialui,
