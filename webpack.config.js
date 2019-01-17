@@ -85,6 +85,7 @@ module.exports = {
           /\.gif$/,
           /\.jpe?g$/,
           /\.png$/,
+          /\.PNG$/,
           /\.svg$/,
           /\.eot$/,
           /\.woff$/,
