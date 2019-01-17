@@ -11,7 +11,7 @@ import {
 import { Icon } from "@sensenet/icons-react";
 
 import logo from "./sensenet-icon-32.png";
-import dashboard from "./dashboard.png";
+import dashboard from "./dashboard.PNG";
 import maros from "./maros.png";
 import { CommandBox } from "./CommandBox";
 import zIndex from "@material-ui/core/styles/zIndex";
