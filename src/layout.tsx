@@ -51,14 +51,18 @@ export class Layout extends React.Component<{}, LayoutState> {
 
   public componentDidMount() {
     document.addEventListener("keyup", this.handleKeyUp);
+    document.addEventListener("keydown", this.handleKeyUp);
   }
 
   public componentWillUnmount() {
     document.removeEventListener("keyup", this.handleKeyUp);
+    document.removeEventListener("keydown", this.handleKeyUp);
   }
 
   private handleKeyUp(ev: KeyboardEvent) {
-    if (ev.key.toLowerCase() === "p" && ev.altKey) {
+    if (ev.key.toLowerCase() === "p" && ev.ctrlKey) {
+      ev.stopImmediatePropagation();
+      ev.preventDefault();
       if (ev.shiftKey) {
         this.setState({ search: ">", isActive: true });
       } else {
