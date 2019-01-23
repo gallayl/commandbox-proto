@@ -6,4 +6,7 @@ interface AuthorizedLinkProps extends LinkProps {
 }
 
 export const AuthorizedLink: React.StatelessComponent<AuthorizedLinkProps>
-= (props) => props.authorize() ? <Link {...props} /> : null
+= (props) => {
+    const {authorize, ...linkProps }= {...props};
+    return props.authorize() ? <Link {...linkProps} /> : null
+}

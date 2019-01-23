@@ -72,6 +72,7 @@
     "@sensenet/repository-events": "^1.2.2",
     "@types/autosuggest-highlight": "^3.1.0",
     "@types/react-autosuggest": "^9.3.6",
+    "@types/react-responsive": "^3.0.2",
     "autosuggest-highlight": "^3.1.1",
     "enzyme-to-json": "^3.3.5",
     "moment": "^2.22.2",
@@ -80,7 +81,10 @@
     "react-dom": "^16.6.3",
     "react-fontawesome": "^1.6.1",
     "react-moment": "^0.8.4",
+    "react-responsive": "^6.0.1",
     "react-test-renderer": "^16.6.3",
+    "redux": "^4.0.1",
+    "redux-di-middleware": "^2.0.3",
     "ts-jest": "^23.10.5",
     "uuid": "^3.3.2"
   },

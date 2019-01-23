@@ -1,11 +1,10 @@
-import "jest"
 import React from "react"
 import { shallow } from "enzyme";
-import {Layout} from "../src/components/Layout"
+import {DesktopLayout} from "../src/components/Layout/DesktopLayout"
 
 describe("Layout", ()=>{
     it("Matches snapshot", ()=>{
-        const l = shallow(<Layout />)
+        const l = shallow(<DesktopLayout />)
         expect(l).toMatchSnapshot();
     })
 })

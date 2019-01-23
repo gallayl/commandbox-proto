@@ -5,41 +5,22 @@ import {
   IconButton,
   Typography,
   MuiThemeProvider,
-  createMuiTheme,
   ClickAwayListener
 } from "@material-ui/core";
 
 import logo from "../assets/sensenet-icon-32.png";
 import dashboard from "../assets/dashboard.PNG";
 import maros from "../assets/maros.png";
-import { CommandBox } from "./CommandBox";
-import zIndex from "@material-ui/core/styles/zIndex";
+import { CommandBox } from "../CommandBox";
 import Search from "@material-ui/icons/Search";
+import theme from "../../theme";
 
 interface LayoutState {
   isActive: boolean;
   search: string;
 }
 
-const theme = createMuiTheme({
-  palette: {},
-  typography: {
-    useNextVariants: true,
-  },
-  overrides: {
-    MuiList: {
-      root: {
-        margin: "0 !important",
-        padding: "0 !important"
-      }
-    },
-    MuiAppBar: {
-      root: {
-        zIndex: zIndex.drawer + 1
-      }
-    }
-  }
-});
+
 
 export class Layout extends React.Component<{}, LayoutState> {
   public state: LayoutState = { isActive: false, search: "" };
