@@ -8,13 +8,13 @@ import {
   createMuiTheme,
   ClickAwayListener
 } from "@material-ui/core";
-import { Icon } from "@sensenet/icons-react";
 
-import logo from "./sensenet-icon-32.png";
-import dashboard from "./dashboard.PNG";
-import maros from "./maros.png";
+import logo from "../assets/sensenet-icon-32.png";
+import dashboard from "../assets/dashboard.PNG";
+import maros from "../assets/maros.png";
 import { CommandBox } from "./CommandBox";
 import zIndex from "@material-ui/core/styles/zIndex";
+import Search from "@material-ui/icons/Search";
 
 interface LayoutState {
   isActive: boolean;
@@ -23,6 +23,9 @@ interface LayoutState {
 
 const theme = createMuiTheme({
   palette: {},
+  typography: {
+    useNextVariants: true,
+  },
   overrides: {
     MuiList: {
       root: {
@@ -82,7 +85,7 @@ export class Layout extends React.Component<{}, LayoutState> {
           <Toolbar style={{}}>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <img src={logo} style={{ marginRight: "1em" }} />
-              <Typography variant="h6" color="inherit">
+              <Typography variant="h5" color="inherit">
                 Sensenet
               </Typography>
             </div>
@@ -104,7 +107,7 @@ export class Layout extends React.Component<{}, LayoutState> {
                   this.setState({ isActive: !this.state.isActive })
                 }
               >
-                <Icon iconName="search" color="inherit" />
+                <Search />
               </IconButton>
               <div style={{ width: "100%" }}>
                 {this.state.isActive ? (

@@ -19,25 +19,5 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2016"
-  },
-  "references": [
-    { "path": "packages/sn-authentication-jwt" },
-    { "path": "packages/sn-client-auth-google" },
-    { "path": "packages/sn-client-core" },
-    { "path": "packages/sn-client-utils" },
-    { "path": "packages/sn-control-mapper" },
-    { "path": "packages/sn-controls-react" },
-    { "path": "packages/sn-default-content-types" },
-    { "path": "packages/sn-document-viewer-react" },
-    { "path": "packages/sn-icons-react" },
-    { "path": "packages/sn-list-controls-react" },
-    { "path": "packages/sn-query" },
-    { "path": "packages/sn-redux" },
-    { "path": "packages/sn-redux-promise-middleware" },
-    { "path": "packages/sn-repository-events" },
-    { "path": "packages/sn-search-react" },
-    { "path": "examples/sn-dms-demo" },
-    { "path": "examples/sn-react-component-docs" },
-    { "path": "examples/sn-react-redux-todo-app" }
-  ]
+  }
 }

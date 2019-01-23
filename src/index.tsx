@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import * as ReactDOM from "react-dom";
-import { Layout } from "./layout";
+import { Layout } from "./components/layout";
 
 import "./png";
 import "./jpg";

@@ -2,7 +2,15 @@ import React from "react";
 import Autosuggest, { InputProps } from "react-autosuggest";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
-import maros from "./maros.png";
+import maros from "../assets/maros.png";
+import OpenInNew from "@material-ui/icons/OpenInNew"
+import Code from "@material-ui/icons/Code"
+import Folder from "@material-ui/icons/Folder"
+import Help from "@material-ui/icons/Help"
+import Settings from "@material-ui/icons/Settings"
+import ThumbUpAlt from "@material-ui/icons/ThumbUpAlt"
+import InsertDriveFile from "@material-ui/icons/InsertDriveFile"
+import FindInPage from "@material-ui/icons/FindInPage"
 import {
   TextField,
   List,
@@ -14,7 +22,7 @@ import {
   IconButton,
   Typography
 } from "@material-ui/core";
-import { Icon, iconType } from "@sensenet/icons-react";
+
 
 interface CommandBoxState {
   value: string;
@@ -31,8 +39,7 @@ interface Hit {
 
 const createHitsForRoute = (
   path: string,
-  icon: { type: iconType; name: string; icon?: JSX.Element } = {
-    type: iconType.materialui,
+  icon: {  name: string; icon?: JSX.Element } = {
     name: "insert_drive_file"
   }
 ) => {
@@ -48,7 +55,7 @@ const createHitsForRoute = (
         );
       }}
     >
-      <Icon iconName="open_in_new" type={iconType.materialui} />
+      <OpenInNew />
     </IconButton>
   );
   const lastSegment = segments[segments.length - 1];
@@ -56,7 +63,7 @@ const createHitsForRoute = (
     {
       primaryText: lastSegment,
       secondaryText: path,
-      icon: icon.icon || <Icon iconName={icon.name} type={icon.type} />,
+      icon: icon.icon || null,
       secondaryAction
     },
     ...segments.slice(0, segments.length - 2).map(
@@ -64,7 +71,7 @@ const createHitsForRoute = (
         ({
           primaryText: _s,
           secondaryText: segments.slice(0, index + 1).join("/"),
-          icon: <Icon iconName="folder" />,
+          icon: <Folder />,
           secondaryAction
         } as Hit)
     )
@@ -75,30 +82,27 @@ const hits: Hit[] = [
   {
     primaryText: "?",
     secondaryText: "ÉN LESZEK A HELP. Gratulálok hogy megnyitottál",
-    icon: <Icon iconName="help" type={iconType.materialui} />
+    icon: <Help />
   },
   {
     primaryText: ">",
     secondaryText: "ÉN LESZEK A Command Palette. Gratulálok hogy megnyitottál",
-    icon: <Icon iconName="thumb_up_alt" type={iconType.materialui} />
+    icon: <ThumbUpAlt />
   },
   {
     primaryText: "TypeIs: InTree:",
     secondaryText:
       "Egy content query-t kezdtél el gépelni ami szintén működni fog és örülünk.",
-    icon: <Icon iconName="find_in_page" type={iconType.materialui} />
+    icon: <FindInPage />
   },
-  ...createHitsForRoute("Root", { type: iconType.materialui, name: "public" }),
+  ...createHitsForRoute("Root"),
   ...createHitsForRoute("Root/IMS", {
-    type: iconType.materialui,
     name: "domain"
   }),
   ...createHitsForRoute("Root/IMS/Builtin/Portal/Admin", {
-    type: iconType.materialui,
     name: "person"
   }),
   ...createHitsForRoute("Root/IMS/Builtin/Portal/Maros", {
-    type: iconType.materialui,
     name: "person",
     icon: (
       <div
@@ -123,8 +127,8 @@ const hits: Hit[] = [
     )
   }),
   ...createHitsForRoute("Root/System/Settings/PortalSettings.settings", {
-    type: iconType.materialui,
-    name: "code"
+    name: "code",
+    icon: <Code />
   }),
   ...createHitsForRoute("Root/Workspaces/Document/Almafa/Alma.txt"),
   ...createHitsForRoute("Root/Workspaces/Document/Almafa/Idared.psd"),
@@ -222,7 +226,7 @@ const getSuggestions = (value: string) => {
         {
           primaryText: "barack.docx",
           secondaryText: "Root/Workspaces/DocLib666/Folderke",
-          icon: <Icon iconName="insert_drive_file" />,
+          icon: <InsertDriveFile />,
           secondaryAction: (
             <div>
               <Typography color="textSecondary">
@@ -234,7 +238,7 @@ const getSuggestions = (value: string) => {
         {
           primaryText: "PortalSettings.json",
           secondaryText: "Root/System/Settings",
-          icon: <Icon iconName="settings" />,
+          icon: <Settings />,
           secondaryAction: (
             <div>
               <Typography color="textSecondary">
