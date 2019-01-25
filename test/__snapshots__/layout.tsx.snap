@@ -5,84 +5,35 @@ exports[`Layout Matches snapshot 1`] = `
   style={
     Object {
       "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "left": 0,
+      "position": "fixed",
+      "top": 0,
+      "width": "100%",
     }
   }
 >
   <WithStyles(CssBaseline) />
-  <WithStyles(AppBar)
-    position="fixed"
-  >
-    <WithStyles(Toolbar)>
-      <div
-        style={
-          Object {
-            "display": "flex",
-            "flexDirection": "row",
-          }
-        }
-      >
-        <img
-          src="sensenet-icon-32.png"
-          style={
-            Object {
-              "filter": "drop-shadow(0px 0px 3px black)",
-              "marginRight": "1em",
-            }
-          }
-        />
-        <WithStyles(Typography)
-          color="inherit"
-          variant="h5"
-        >
-          SN ADMIN UI
-        </WithStyles(Typography)>
-      </div>
-      <div
-        style={
-          Object {
-            "flex": 1,
-          }
-        }
-      />
-      <pure(PersonIcon) />
-    </WithStyles(Toolbar)>
-  </WithStyles(AppBar)>
-  <Component
-    items={
-      Array [
-        Object {
-          "authorize": [Function],
-          "icon": <pure(PersonIcon) />,
-          "primaryText": "Alma",
-          "secondaryText": "Menüke 1",
-          "url": "/alma",
-        },
-        Object {
-          "authorize": [Function],
-          "icon": <pure(PersonIcon) />,
-          "primaryText": "Körte",
-          "secondaryText": "Menüke 2",
-          "url": "/korte",
-        },
-        <WithStyles(Divider) />,
-        Object {
-          "authorize": [Function],
-          "icon": <pure(PersonIcon) />,
-          "primaryText": "Cucc",
-          "secondaryText": "Menüke 3",
-          "url": "/cucc",
-        },
-      ]
-    }
-    width={220}
-  />
+  <Connect(DesktopAppBar) />
   <div
     style={
       Object {
-        "marginLeft": 220,
-        "marginTop": "64px",
+        "display": "flex",
+        "flexDirection": "row",
+        "flexGrow": 1,
       }
     }
-  />
+  >
+    <withRouter(Connect(DesktopDrawer)) />
+    <div
+      style={
+        Object {
+          "flexGrow": 1,
+          "overflow": "auto",
+        }
+      }
+    />
+  </div>
 </div>
 `;

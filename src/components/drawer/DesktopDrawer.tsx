@@ -29,6 +29,7 @@ const DesktopDrawer: React.StatelessComponent<
   return (
     <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
       <List
+        dense
         style={{
           width: props.opened ? 270 : 55,
           height: '100%',
@@ -38,8 +39,10 @@ const DesktopDrawer: React.StatelessComponent<
           overflow: 'hidden',
           justifyContent: 'space-between',
           flexDirection: 'column',
+          backgroundColor: "#222",
+          paddingTop: "1em"
         }}>
-        <div>
+        <div style={{paddingTop: "1em"}}>
           {props.items.map(item => {
             const isActive = matchPath(props.location.pathname, item.url)
             return isActive ? (

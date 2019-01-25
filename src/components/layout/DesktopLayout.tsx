@@ -18,7 +18,7 @@ export const DesktopLayout: React.StatelessComponent = props => (
     <DesktopAppBar />
     <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
       <DesktopDrawer />
-      <div style={{ overflow: 'auto', flexGrow: 1 }}>{props.children}</div>
+      <div style={{display: "flex"}}>{props.children}</div>
     </div>
   </div>
 )
