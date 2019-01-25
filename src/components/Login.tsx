@@ -49,8 +49,7 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
 
   public render() {
     return (
-      <div style={{ display: 'flex', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Paper style={{ padding: '1em', minWidth: '450px' }}>
+        <Paper style={{ padding: '1em', flexShrink: 0, width: '450px', alignSelf: "center", margin: "auto" }}>
           <Typography variant="h4">Login</Typography>
           <form onSubmit={this.handleSubmit}>
             <Divider />
@@ -99,7 +98,6 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
             </div>
           </form>
         </Paper>
-      </div>
     )
   }
 }
