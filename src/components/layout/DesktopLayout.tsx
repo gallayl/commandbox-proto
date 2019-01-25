@@ -1,40 +1,40 @@
-import React from "react"
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import User from "@material-ui/icons/Person"
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from 'react'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
-import logo from "../../assets/sensenet-icon-32.png"
-import { DesktopDrawer } from "../drawer/DesktopDrawer";
-import { Divider } from "@material-ui/core";
+import CssBaseline from '@material-ui/core/CssBaseline'
+import logo from '../../assets/sensenet-icon-32.png'
+import { DesktopDrawer } from '../drawer/DesktopDrawer'
+import { UserAvatar } from '../UserAvatar'
 
-const toolbarWidth = 220
-
-export const DesktopLayout: React.StatelessComponent = (props) => <div style={{display: 'flex'}}>
+export const DesktopLayout: React.StatelessComponent = props => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    }}>
     <CssBaseline />
-    <AppBar position="fixed">
-        <Toolbar>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <img src={logo} style={{ marginRight: "1em", filter: "drop-shadow(0px 0px 3px black)" }} />
-                    <Typography variant="h5" color="inherit">
-                    SN ADMIN UI
-              </Typography>
-              </div>
-              <div style={{flex: 1}} />
-              <User />
-        </Toolbar>
+    <AppBar position="sticky">
+      <Toolbar>
+        <a href="#" style={{ display: 'flex', flexDirection: 'row', textDecoration: 'none' }}>
+          <img src={logo} style={{ marginRight: '1em', filter: 'drop-shadow(0px 0px 3px black)' }} />
+          <Typography variant="h5" color="inherit">
+            SN ADMIN UI
+          </Typography>
+        </a>
+        <div style={{ flex: 1 }} />
+        <UserAvatar user={{} as any} />
+      </Toolbar>
     </AppBar>
-
-    <DesktopDrawer width={toolbarWidth} items={[
-        {primaryText: "Alma", secondaryText: "Menüke 1", url: "/alma", icon: <User />, authorize: ()=>true},
-        {primaryText: "Körte", secondaryText: "Menüke 2", url: "/korte", icon: <User />, authorize: ()=>true},
-        <Divider />,
-        {primaryText: "Cucc", secondaryText: "Menüke 3", url: "/cucc", icon: <User />, authorize: ()=>true},
-        
-    ]} />
-    
-    <div style={{marginTop: "64px", marginLeft: toolbarWidth}}>
-        {props.children}
+    <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
+      <DesktopDrawer />
+      <div style={{ overflow: 'auto', flexGrow: 1 }}>{props.children}</div>
     </div>
-</div>
+  </div>
+)
