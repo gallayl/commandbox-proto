@@ -43,7 +43,7 @@ const DesktopDrawer: React.StatelessComponent<
           {props.items.map(item => {
             const isActive = matchPath(props.location.pathname, item.url)
             return isActive ? (
-              <ListItem button disabled>
+              <ListItem button disabled key={item.primaryText}>
                 <Tooltip
                   title={
                     <React.Fragment>

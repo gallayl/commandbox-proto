@@ -23,17 +23,6 @@ export const loginToRepository = createAction((username: string, password: strin
 export const setCurrentUser = createAction((user: User) => ({
   user,
   type: 'setCurrentUser',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const repo = options.getInjectable(Repository)
-    const groups = await repo.security.getParentGroups({
-      contentIdOrPath: user.Id,
-      directOnly: false,
-      oDataOptions: {
-        select: ['Name'],
-      },
-    })
-    options.dispatch(setGroups(groups.d.results))
-  },
 }))
 
 export const setGroups = createAction((groups: Group[]) => ({
@@ -57,7 +46,7 @@ export const session: Reducer<SessionReducerType, AnyAction> = (
   if (isFromAction(action, setCurrentUser)) {
     return {
       ...state,
-      user: action.user,
+      currentUser: action.user,
     }
   } else if (isFromAction(action, setLoginState)) {
     return {
