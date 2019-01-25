@@ -5,7 +5,6 @@ import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
-import DashboardTwoTone from '@material-ui/icons/DashboardTwoTone'
 import { setGroups } from './Session'
 
 export interface DrawerItem {
