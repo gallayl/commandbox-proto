@@ -12,6 +12,7 @@ import { QueryCommandProvider } from '../services/QueryCommandProvider';
 import { HistoryCommandProvider } from '../services/HistoryCommandProvider';
 import { HelpCommandProvider } from '../services/HelpCommandProvider';
 import { InFolderSearchCommandProvider } from '../services/InFolderSearchCommandProvider';
+import { CheatCommandProvider } from '../services/CheatCommandProvider';
 
 export const setupRepositoryServices = async (options: {
   injector: Injector
@@ -26,7 +27,7 @@ export const setupRepositoryServices = async (options: {
   const eventHub = new EventHub(repo)
 
   const commandProviderManager = options.injector.GetInstance(CommandProviderManager);
-  commandProviderManager.RegisterProviders(QueryCommandProvider, HistoryCommandProvider, HelpCommandProvider, InFolderSearchCommandProvider)
+  commandProviderManager.RegisterProviders(QueryCommandProvider, HistoryCommandProvider, HelpCommandProvider, InFolderSearchCommandProvider, CheatCommandProvider)
   repo.authentication.currentUser.subscribe(async u => {
     store.dispatch(setGroups([]));
     store.dispatch(setCurrentUser(u))

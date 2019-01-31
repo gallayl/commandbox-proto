@@ -1,7 +1,7 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import Search from "@material-ui/icons/Search";
+import KeyboardArrowRightTwoTone from "@material-ui/icons/KeyboardArrowRightTwoTone";
 import { rootStateType } from "../../store";
 import { open, close, setInputValue, updateItemsFromTerm, clearItems, CommandPaletteItem } from "../../store/CommandPalette";
 import { connect } from "react-redux";
@@ -81,8 +81,16 @@ export class CommandPaletteComponent extends React.Component<ReturnType<typeof m
         onBlur: this.props.close,
       }
 
-        return <div style={{flex: 1, padding: "0 2em"}}>
-        {this.props.isOpened ? 
+      if (!this.props.isOpened) {
+        return  <Tooltip style={{flex: 1, justifyContent: 'start'}} placeholder="bottom" title="Show Command Palette">
+        <div><IconButton onClick={this.props.open}>
+            <KeyboardArrowRightTwoTone />
+        </IconButton>
+        </div>
+        </Tooltip>
+      }
+
+        return (<div style={{flex: 1, padding: "0 2em"}}>
         <ClickAwayListener onClickAway={this.props.close}>
             <div  ref={r=>r ? this.containerRef = r : null}>
             <Autosuggest<CommandPaletteItem>
@@ -117,14 +125,8 @@ export class CommandPaletteComponent extends React.Component<ReturnType<typeof m
             />
             </div>
         </ClickAwayListener>
-        : <Tooltip placeholder="bottom" title="Show Command Palette">
-        <IconButton onClick={this.props.open}>
-            <Search />
-        </IconButton>
-        </Tooltip>}
-    </div>
+      </div>)
     }
-
 }
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(CommandPaletteComponent);
