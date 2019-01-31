@@ -5,6 +5,8 @@ import { Injector } from '@furystack/inject'
 import { setupRepositoryServices } from './RepositoryServices'
 import { drawer } from './Drawer'
 import { persistedState } from './PersistedState'
+import { loadedContentCache } from './LoadedContentCache';
+import { commandPalette } from './CommandPalette';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -12,6 +14,8 @@ export const rootReducer = combineReducers({
   session,
   drawer,
   persistedState,
+  loadedContentCache,
+  commandPalette,
 })
 export type rootStateType = ReturnType<typeof rootReducer>
 export const diMiddleware = new ReduxDiMiddleware(Injector.Default)

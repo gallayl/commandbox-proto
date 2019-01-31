@@ -107,6 +107,7 @@ export class FormsAuthenticationService implements AuthenticationService {
         method: 'POST',
         idOrPath: ConstantContent.PORTAL_ROOT.Id,
         name: 'Login',
+        oDataOptions: {...this.userLoadOptions}
       })
       this.currentUser.setValue(user.d)
       const isVisitor = user.d.Id !== ConstantContent.VISITOR_USER.Id ? true : false
@@ -122,14 +123,14 @@ export class FormsAuthenticationService implements AuthenticationService {
    * Logs out and destroys the current session
    */
   public async logout(): Promise<boolean> {
+    this.currentUser.setValue(ConstantContent.VISITOR_USER)
+    this.state.setValue(LoginState.Unauthenticated)
     await this.repository.executeAction({
       method: 'POST',
       idOrPath: ConstantContent.PORTAL_ROOT.Id,
       name: 'Logout',
       body: {},
     })
-    this.currentUser.setValue(ConstantContent.VISITOR_USER)
-    this.state.setValue(LoginState.Unauthenticated)
     return true
   }
 }

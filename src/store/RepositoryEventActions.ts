@@ -3,57 +3,57 @@ import { Store } from 'redux'
 import { createAction } from './ActionHelpers'
 import { GenericContent } from '@sensenet/default-content-types'
 
-const eventHubContentLoaded = createAction((content: GenericContent) => ({ type: 'eventHubContentLoaded', content }))
+export const eventHubContentLoaded = createAction((content: GenericContent) => ({ type: 'eventHubContentLoaded', content }))
 
-const eventHubContentModified = createAction((content: GenericContent, changes: GenericContent) => ({
+export const eventHubContentModified = createAction((content: GenericContent, changes: GenericContent) => ({
   type: 'eventHubContentModified',
   content,
   changes,
 }))
 
-const eventHubContentModificationFailed = createAction((content: Partial<GenericContent>, error: any) => ({
+export const eventHubContentModificationFailed = createAction((content: Partial<GenericContent>, error: any) => ({
   type: 'eventHubContentModificationFailed',
   content,
   error,
 }))
 
-const eventHubContentDeleted = createAction((contentData: GenericContent, permanently: boolean) => ({
+export const eventHubContentDeleted = createAction((contentData: GenericContent, permanently: boolean) => ({
   type: 'eventHubContentDeleted',
   contentData,
   permanently,
 }))
-const eventHubContentDeleteFailed = createAction((content: GenericContent, permanently: boolean, error: any) => ({
+export const eventHubContentDeleteFailed = createAction((content: GenericContent, permanently: boolean, error: any) => ({
   type: 'eventHubContentDeleteFailed',
   content,
   permanently,
   error,
 }))
 
-const eventHubContentCreated = createAction((content: GenericContent) => ({ type: 'eventHubContentCreated', content }))
-const eventHubContentCreateFailed = createAction((content: GenericContent, error: any) => ({
+export const eventHubContentCreated = createAction((content: GenericContent) => ({ type: 'eventHubContentCreated', content }))
+export const eventHubContentCreateFailed = createAction((content: GenericContent, error: any) => ({
   type: 'eventHubContentCreateFailed',
   content,
   error,
 }))
 
-const eventHubContentCopied = createAction(
+export const eventHubContentCopied = createAction(
   (content: GenericContent, originalContent: string | number | Array<string | number>) => ({
     type: 'eventHubContentCopied',
     content,
     originalContent,
   }),
 )
-const eventHubContentCopyFailed = createAction((content: GenericContent, error: any) => ({
+export const eventHubContentCopyFailed = createAction((content: GenericContent, error: any) => ({
   type: 'eventHubContentCopyFailed',
   content,
   error,
 }))
 
-const eventHubContentMoved = createAction((content: GenericContent) => ({
+export const eventHubContentMoved = createAction((content: GenericContent) => ({
   type: 'eventHubContentMoved',
   content,
 }))
-const eventHubContentMoveFailed = createAction((content: GenericContent, error: any) => ({
+export const eventHubContentMoveFailed = createAction((content: GenericContent, error: any) => ({
   type: 'eventHubContentMoveFailed',
   content,
   error,

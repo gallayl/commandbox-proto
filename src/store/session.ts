@@ -4,6 +4,7 @@ import { Reducer, AnyAction } from 'redux'
 import { rootStateType } from '.'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { createAction, isFromAction } from './ActionHelpers'
+import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository';
 
 export interface SessionReducerType {
   loginState: LoginState
@@ -18,6 +19,23 @@ export const loginToRepository = createAction((username: string, password: strin
     await repo.authentication.login(username, password)
   },
   type: 'LOGIN_TO_REPOSITORY',
+}))
+
+
+export const logoutFromRepository = createAction(() => ({
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const repo = options.getInjectable(Repository)
+    try {
+      await repo.authentication.logout()
+    } catch (error) {
+      if (isExtendedError(error)){
+        if (!error.response.ok){
+          throw error;
+        }
+      }
+    }
+  },
+  type: 'LOGOUT_FROM_REPOSITORY',
 }))
 
 export const setCurrentUser = createAction((user: User) => ({

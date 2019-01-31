@@ -7,6 +7,11 @@ import { subscribeEventsToStore } from './RepositoryEventActions'
 import { store } from '.'
 import { setCurrentUser, setLoginState, setGroups } from './Session'
 import { FormsAuthenticationService } from '../services/FormsAuthenticationService'
+import { CommandProviderManager } from '../services/CommandProviderManager';
+import { QueryCommandProvider } from '../services/QueryCommandProvider';
+import { HistoryCommandProvider } from '../services/HistoryCommandProvider';
+import { HelpCommandProvider } from '../services/HelpCommandProvider';
+import { InFolderSearchCommandProvider } from '../services/InFolderSearchCommandProvider';
 
 export const setupRepositoryServices = async (options: {
   injector: Injector
@@ -20,6 +25,8 @@ export const setupRepositoryServices = async (options: {
   options.injector.SetInstance(repo)
   const eventHub = new EventHub(repo)
 
+  const commandProviderManager = options.injector.GetInstance(CommandProviderManager);
+  commandProviderManager.RegisterProviders(QueryCommandProvider, HistoryCommandProvider, HelpCommandProvider, InFolderSearchCommandProvider)
   repo.authentication.currentUser.subscribe(async u => {
     store.dispatch(setGroups([]));
     store.dispatch(setCurrentUser(u))
