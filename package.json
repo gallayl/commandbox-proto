@@ -92,6 +92,7 @@
     "redux-di-middleware": "^3.0.0",
     "semaphore-async-await": "^1.5.1",
     "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
     "uuid": "^3.3.2"
   },
   "config": {

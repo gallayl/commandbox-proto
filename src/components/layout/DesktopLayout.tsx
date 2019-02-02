@@ -1,7 +1,7 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { DesktopDrawer } from '../drawer/DesktopDrawer'
-import { DesktopAppBar } from '../appbar/DesktopAppBar';
+import { DesktopAppBar } from '../appbar/DesktopAppBar'
 
 export const DesktopLayout: React.StatelessComponent = props => (
   <div
@@ -18,7 +18,7 @@ export const DesktopLayout: React.StatelessComponent = props => (
     <DesktopAppBar />
     <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
       <DesktopDrawer />
-      <div style={{display: "flex", flexGrow: 1}}>{props.children}</div>
+      <div style={{ display: 'flex', flexGrow: 1 }}>{props.children}</div>
     </div>
   </div>
 )

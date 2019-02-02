@@ -3,12 +3,12 @@ export const createAction = <TReturns extends { type: string }, TArgs extends an
 ) => {
   const actionType = (creator as any)().type
 
-  // const wrappedMethod: ((...args: TArgs) => TReturns & { type: string }) & { actionType: string } = (
-  //   ...wrappedArgs: TArgs
-  // ) => ({
-  //   ...creator(...wrappedArgs),
-  //   type: actionType,
-  // })
+    // const wrappedMethod: ((...args: TArgs) => TReturns & { type: string }) & { actionType: string } = (
+    //   ...wrappedArgs: TArgs
+    // ) => ({
+    //   ...creator(...wrappedArgs),
+    //   type: actionType,
+    // })
   ;(creator as any).actionType = actionType
   return creator as typeof creator & { actionType: string }
   // return wrappedMethod

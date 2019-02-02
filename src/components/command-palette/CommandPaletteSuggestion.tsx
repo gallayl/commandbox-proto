@@ -20,7 +20,7 @@ export const getMatchParts = (text: string, term: string) => {
   }
 
 export const CommandPaletteSuggestion: React.FunctionComponent<{suggestion: CommandPaletteItem, params: RenderSuggestionParams}> = ({suggestion, params}) => (
-    <ListItem selected={params.isHighlighted}>
+    <ListItem button selected={params.isHighlighted}>
         { suggestion.avatar ? <ListItemAvatar><Avatar src={suggestion.avatar.url}>{suggestion.avatar.abbrev}</Avatar></ListItemAvatar> :null }
         { !suggestion.avatar && suggestion.icon ? <ListItemIcon style={{margin: "0 8px"}} >
         <CommandPaletteIcon />

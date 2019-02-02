@@ -1,18 +1,28 @@
-import { GenericContent } from "@sensenet/default-content-types";
-import { Reducer } from "redux";
-import { isFromAction } from "./ActionHelpers";
-import { eventHubContentLoaded, eventHubContentCopied, eventHubContentDeleted, eventHubContentModified, eventHubContentMoved, eventHubContentCreated } from "./RepositoryEventActions"
+import { GenericContent } from '@sensenet/default-content-types'
+import { Reducer } from 'redux'
+import { isFromAction } from './ActionHelpers'
+import {
+  eventHubContentLoaded,
+  eventHubContentCopied,
+  eventHubContentDeleted,
+  eventHubContentModified,
+  eventHubContentMoved,
+  eventHubContentCreated,
+} from './RepositoryEventActions'
 
-export const loadedContentCache: Reducer<Array<GenericContent>> = (state=[], action) => {
-    if (isFromAction(action, eventHubContentLoaded) || isFromAction(action, eventHubContentModified) || isFromAction(action, eventHubContentMoved)){
-        return state.find(item=>item.Id === action.content.Id) ? state.map(item => item.Id === action.content.Id ? action.content : item) : [...state, action.content]
-    } else if (isFromAction(action, eventHubContentDeleted)) {
-        return state.filter(item => item.Id !== action.contentData.Id);
-    } else if (isFromAction(action, eventHubContentCopied) || isFromAction(action, eventHubContentCreated)){
-        return [
-            ...state,
-            action.content
-        ]
-    }
-    return state;
+export const loadedContentCache: Reducer<Array<GenericContent>> = (state = [], action) => {
+  if (
+    isFromAction(action, eventHubContentLoaded) ||
+    isFromAction(action, eventHubContentModified) ||
+    isFromAction(action, eventHubContentMoved)
+  ) {
+    return state.find(item => item.Id === action.content.Id)
+      ? state.map(item => (item.Id === action.content.Id ? action.content : item))
+      : [...state, action.content]
+  } else if (isFromAction(action, eventHubContentDeleted)) {
+    return state.filter(item => item.Id !== action.contentData.Id)
+  } else if (isFromAction(action, eventHubContentCopied) || isFromAction(action, eventHubContentCreated)) {
+    return [...state, action.content]
+  }
+  return state
 }

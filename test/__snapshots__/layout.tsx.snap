@@ -29,8 +29,8 @@ exports[`Layout Matches snapshot 1`] = `
     <div
       style={
         Object {
+          "display": "flex",
           "flexGrow": 1,
-          "overflow": "auto",
         }
       }
     />

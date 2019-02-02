@@ -2,7 +2,7 @@
  * Global Style overrides
 **/
 
-ul[role="listbox"] {
+ul[role='listbox'] {
   margin: 0;
   padding: 0;
 }

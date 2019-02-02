@@ -3,7 +3,10 @@ import { Store } from 'redux'
 import { createAction } from './ActionHelpers'
 import { GenericContent } from '@sensenet/default-content-types'
 
-export const eventHubContentLoaded = createAction((content: GenericContent) => ({ type: 'eventHubContentLoaded', content }))
+export const eventHubContentLoaded = createAction((content: GenericContent) => ({
+  type: 'eventHubContentLoaded',
+  content,
+}))
 
 export const eventHubContentModified = createAction((content: GenericContent, changes: GenericContent) => ({
   type: 'eventHubContentModified',
@@ -22,14 +25,19 @@ export const eventHubContentDeleted = createAction((contentData: GenericContent,
   contentData,
   permanently,
 }))
-export const eventHubContentDeleteFailed = createAction((content: GenericContent, permanently: boolean, error: any) => ({
-  type: 'eventHubContentDeleteFailed',
-  content,
-  permanently,
-  error,
-}))
+export const eventHubContentDeleteFailed = createAction(
+  (content: GenericContent, permanently: boolean, error: any) => ({
+    type: 'eventHubContentDeleteFailed',
+    content,
+    permanently,
+    error,
+  }),
+)
 
-export const eventHubContentCreated = createAction((content: GenericContent) => ({ type: 'eventHubContentCreated', content }))
+export const eventHubContentCreated = createAction((content: GenericContent) => ({
+  type: 'eventHubContentCreated',
+  content,
+}))
 export const eventHubContentCreateFailed = createAction((content: GenericContent, error: any) => ({
   type: 'eventHubContentCreateFailed',
   content,

@@ -107,7 +107,7 @@ export class FormsAuthenticationService implements AuthenticationService {
         method: 'POST',
         idOrPath: ConstantContent.PORTAL_ROOT.Id,
         name: 'Login',
-        oDataOptions: {...this.userLoadOptions}
+        oDataOptions: { ...this.userLoadOptions },
       })
       this.currentUser.setValue(user.d)
       const isVisitor = user.d.Id !== ConstantContent.VISITOR_USER.Id ? true : false
