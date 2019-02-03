@@ -1,6 +1,6 @@
-import { CommandProvider } from './CommandProviderManager'
-import { CommandPaletteItem } from '../store/CommandPalette'
 import { Injectable } from '@furystack/inject'
+import { CommandPaletteItem } from '../store/CommandPalette'
+import { CommandProvider } from './CommandProviderManager'
 
 @Injectable()
 export class HelpCommandProvider implements CommandProvider {
@@ -8,7 +8,7 @@ export class HelpCommandProvider implements CommandProvider {
     return term === '?' || term === 'help'
   }
 
-  public async getItems(_term: string): Promise<Array<CommandPaletteItem>> {
+  public async getItems(_term: string): Promise<CommandPaletteItem[]> {
     return [
       {
         primaryText: 'Help Item 1',

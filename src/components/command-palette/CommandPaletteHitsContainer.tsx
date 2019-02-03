@@ -1,7 +1,7 @@
-import { RenderSuggestionsContainerParams } from 'react-autosuggest'
-import Paper from '@material-ui/core/Paper'
 import List from '@material-ui/core/List'
+import Paper from '@material-ui/core/Paper'
 import React from 'react'
+import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 
 export const CommandPaletteHitsContainer: React.FunctionComponent<
   RenderSuggestionsContainerParams & { width: number }

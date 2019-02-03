@@ -1,5 +1,5 @@
-import { CommandPaletteItem } from '../store/CommandPalette'
 import { Injectable, Injector } from '@furystack/inject'
+import { CommandPaletteItem } from '../store/CommandPalette'
 
 export interface CommandProvider {
   shouldExec: (term: string) => boolean
@@ -9,7 +9,7 @@ export interface CommandProvider {
 @Injectable()
 export class CommandProviderManager {
   public readonly Providers: CommandProvider[] = []
-  public RegisterProviders(...providerTypes: Array<{ new (...args: any[]): CommandProvider }>) {
+  public RegisterProviders(...providerTypes: Array<new (...args: any[]) => CommandProvider>) {
     for (const providerType of providerTypes) {
       if (!this.Providers.find(p => p instanceof providerType)) {
         const instance = this.injector.GetInstance(providerType)

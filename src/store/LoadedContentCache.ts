@@ -2,15 +2,15 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer } from 'redux'
 import { isFromAction } from './ActionHelpers'
 import {
-  eventHubContentLoaded,
   eventHubContentCopied,
+  eventHubContentCreated,
   eventHubContentDeleted,
+  eventHubContentLoaded,
   eventHubContentModified,
   eventHubContentMoved,
-  eventHubContentCreated,
 } from './RepositoryEventActions'
 
-export const loadedContentCache: Reducer<Array<GenericContent>> = (state = [], action) => {
+export const loadedContentCache: Reducer<GenericContent[]> = (state = [], action) => {
   if (
     isFromAction(action, eventHubContentLoaded) ||
     isFromAction(action, eventHubContentModified) ||

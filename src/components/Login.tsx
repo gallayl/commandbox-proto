@@ -1,14 +1,14 @@
-import React from 'react'
+import Divider from '@material-ui/core/Divider'
+import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Check from '@material-ui/icons/Check'
-import Divider from '@material-ui/core/Divider'
-import TextField from '@material-ui/core/TextField'
-import IconButton from '@material-ui/core/IconButton'
-import { rootStateType } from '../store'
+import React from 'react'
 import { connect } from 'react-redux'
-import { loginToRepository } from '../store/Session'
+import { rootStateType } from '../store'
 import { setPersistedState } from '../store/PersistedState'
+import { loginToRepository } from '../store/Session'
 
 const mapStateToProps = (state: rootStateType) => ({
   lastUserName: state.persistedState.lastUserName,
@@ -49,55 +49,55 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
 
   public render() {
     return (
-        <Paper style={{ padding: '1em', flexShrink: 0, width: '450px', alignSelf: "center", margin: "auto" }}>
-          <Typography variant="h4">Login</Typography>
-          <form onSubmit={this.handleSubmit}>
-            <Divider />
-            <TextField
-              required
-              margin="normal"
-              label="Username"
-              helperText="Enter the user name you've registered with"
-              fullWidth
-              defaultValue={this.props.lastUserName}
-              onChange={ev => {
-                this.setState({
-                  userName: ev.target.value,
-                })
-              }}
-            />
-            <TextField
-              required
-              margin="dense"
-              label="Password"
-              fullWidth
-              type="password"
-              helperText="Enter a matching password for the user"
-              onChange={ev => {
-                this.setState({
-                  password: ev.target.value,
-                })
-              }}
-            />
-            <TextField
-              margin="dense"
-              label="Repository URL"
-              fullWidth
-              defaultValue={this.props.lastRepository}
-              onChange={ev => {
-                this.setState({
-                  repositoryUrl: ev.target.value,
-                })
-              }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
-              <IconButton type="submit">
-                <Check />
-                <Typography variant="button">Log in</Typography>
-              </IconButton>
-            </div>
-          </form>
-        </Paper>
+      <Paper style={{ padding: '1em', flexShrink: 0, width: '450px', alignSelf: 'center', margin: 'auto' }}>
+        <Typography variant="h4">Login</Typography>
+        <form onSubmit={this.handleSubmit}>
+          <Divider />
+          <TextField
+            required={true}
+            margin="normal"
+            label="Username"
+            helperText="Enter the user name you've registered with"
+            fullWidth={true}
+            defaultValue={this.props.lastUserName}
+            onChange={ev => {
+              this.setState({
+                userName: ev.target.value,
+              })
+            }}
+          />
+          <TextField
+            required={true}
+            margin="dense"
+            label="Password"
+            fullWidth={true}
+            type="password"
+            helperText="Enter a matching password for the user"
+            onChange={ev => {
+              this.setState({
+                password: ev.target.value,
+              })
+            }}
+          />
+          <TextField
+            margin="dense"
+            label="Repository URL"
+            fullWidth={true}
+            defaultValue={this.props.lastRepository}
+            onChange={ev => {
+              this.setState({
+                repositoryUrl: ev.target.value,
+              })
+            }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
+            <IconButton type="submit">
+              <Check />
+              <Typography variant="button">Log in</Typography>
+            </IconButton>
+          </div>
+        </form>
+      </Paper>
     )
   }
 }

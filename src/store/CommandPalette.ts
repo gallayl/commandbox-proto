@@ -1,8 +1,8 @@
 import { Reducer } from 'redux'
-import { createAction, isFromAction } from './ActionHelpers'
-import { rootStateType } from '.'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { rootStateType } from '.'
 import { CommandProviderManager } from '../services/CommandProviderManager'
+import { createAction, isFromAction } from './ActionHelpers'
 
 export interface CommandPaletteItem {
   primaryText: string

@@ -1,10 +1,10 @@
-import { User, Group } from '@sensenet/default-content-types'
-import { LoginState, ConstantContent, Repository } from '@sensenet/client-core'
-import { Reducer, AnyAction } from 'redux'
-import { rootStateType } from '.'
-import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { createAction, isFromAction } from './ActionHelpers'
+import { ConstantContent, LoginState, Repository } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { Group, User } from '@sensenet/default-content-types'
+import { AnyAction, Reducer } from 'redux'
+import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { rootStateType } from '.'
+import { createAction, isFromAction } from './ActionHelpers'
 
 export interface SessionReducerType {
   loginState: LoginState

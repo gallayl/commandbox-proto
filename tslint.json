@@ -1,5 +1,7 @@
 {
-  "extends": ["../../tslint.json"],
+  "extends": [
+    "./tslint.default.json"
+  ],
   "rules": {
     "completed-docs": false,
     "variable-name": false

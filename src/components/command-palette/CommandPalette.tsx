@@ -1,98 +1,110 @@
-import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowRightTwoTone from "@material-ui/icons/KeyboardArrowRightTwoTone";
-import { rootStateType } from "../../store";
-import { open, close, setInputValue, updateItemsFromTerm, clearItems, CommandPaletteItem } from "../../store/CommandPalette";
-import { connect } from "react-redux";
-import { ClickAwayListener } from "@material-ui/core";
-import Autosuggest, { InputProps, SuggestionsFetchRequestedParams } from "react-autosuggest"
-import { CommandPaletteSuggestion } from "./CommandPaletteSuggestion";
-import { CommandPaletteHitsContainer } from "./CommandPaletteHitsContainer";
-import { debounce } from "@sensenet/client-utils";
+import { ClickAwayListener } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import KeyboardArrowRightTwoTone from '@material-ui/icons/KeyboardArrowRightTwoTone'
+import { debounce } from '@sensenet/client-utils'
+import React from 'react'
+import Autosuggest, { InputProps, SuggestionsFetchRequestedParams } from 'react-autosuggest'
+import { connect } from 'react-redux'
+import { rootStateType } from '../../store'
+import {
+  clearItems,
+  close,
+  CommandPaletteItem,
+  open,
+  setInputValue,
+  updateItemsFromTerm,
+} from '../../store/CommandPalette'
+import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
+import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
 const mapStateToProps = (state: rootStateType) => ({
-    isOpened: state.commandPalette.isOpened,
-    items: state.commandPalette.items,
-    inputValue: state.commandPalette.inputValue
+  isOpened: state.commandPalette.isOpened,
+  items: state.commandPalette.items,
+  inputValue: state.commandPalette.inputValue,
 })
 
 const mapDispatchToProps = {
-    open,
-    close,
-    setInputValue,
-    updateItemsFromTerm,
-    clearItems
+  open,
+  close,
+  setInputValue,
+  updateItemsFromTerm,
+  clearItems,
 }
 
+export class CommandPaletteComponent extends React.Component<
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+> {
+  private containerRef?: HTMLDivElement
 
-export class CommandPaletteComponent extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps>{
-  private containerRef?: HTMLDivElement;
-    
-    private handleKeyUp(ev: KeyboardEvent) {
-        if (ev.key.toLowerCase() === "p" && ev.ctrlKey) {
-          ev.stopImmediatePropagation();
-          ev.preventDefault();
-          if (ev.shiftKey) {
-            this.props.setInputValue(">")
-            this.props.open()
-          } else {
-            this.props.setInputValue("")
-            this.props.open()
-          }
-        } else {
-          if (ev.key === "Escape") {
-            this.props.close()
-          }
-        }
+  private handleKeyUp(ev: KeyboardEvent) {
+    if (ev.key.toLowerCase() === 'p' && ev.ctrlKey) {
+      ev.stopImmediatePropagation()
+      ev.preventDefault()
+      if (ev.shiftKey) {
+        this.props.setInputValue('>')
+        this.props.open()
+      } else {
+        this.props.setInputValue('')
+        this.props.open()
       }
-
-    constructor(props: CommandPaletteComponent["props"]) {
-        super(props);
-        this.handleKeyUp = this.handleKeyUp.bind(this);
-        this.handleSuggestionsFetchRequested = this.handleSuggestionsFetchRequested.bind(this)
-        this.handleSetInputValue = this.handleSetInputValue.bind(this)
+    } else {
+      if (ev.key === 'Escape') {
+        this.props.close()
       }
+    }
+  }
 
-    private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams) =>{
-        this.props.updateItemsFromTerm(options.value);
-    }, 500)
+  constructor(props: CommandPaletteComponent['props']) {
+    super(props)
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+    this.handleSuggestionsFetchRequested = this.handleSuggestionsFetchRequested.bind(this)
+    this.handleSetInputValue = this.handleSetInputValue.bind(this)
+  }
 
-    public componentDidMount() {
-        document.addEventListener("keyup", this.handleKeyUp);
-        document.addEventListener("keydown", this.handleKeyUp);
-      }
-    
-      public componentWillUnmount() {
-        document.removeEventListener("keyup", this.handleKeyUp);
-        document.removeEventListener("keydown", this.handleKeyUp);
-      }
+  private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams) => {
+    this.props.updateItemsFromTerm(options.value)
+  }, 500)
 
-      private handleSetInputValue(ev: React.ChangeEvent<HTMLInputElement>){
-        this.props.setInputValue(ev.target.value);
-      }
+  public componentDidMount() {
+    document.addEventListener('keyup', this.handleKeyUp)
+    document.addEventListener('keydown', this.handleKeyUp)
+  }
 
-    public render(){
-      const inputProps: InputProps<CommandPaletteItem> = {
-        value: this.props.inputValue,
-        onChange: this.handleSetInputValue,
-        id: 'CommandBoxInput',
-        autoFocus: true,
-        onBlur: this.props.close,
-      }
+  public componentWillUnmount() {
+    document.removeEventListener('keyup', this.handleKeyUp)
+    document.removeEventListener('keydown', this.handleKeyUp)
+  }
 
-      if (!this.props.isOpened) {
-        return  <Tooltip style={{flex: 1, justifyContent: 'start'}} placeholder="bottom" title="Show Command Palette">
-        <div><IconButton onClick={this.props.open}>
-            <KeyboardArrowRightTwoTone />
-        </IconButton>
-        </div>
+  private handleSetInputValue(ev: React.ChangeEvent<HTMLInputElement>) {
+    this.props.setInputValue(ev.target.value)
+  }
+
+  public render() {
+    const inputProps: InputProps<CommandPaletteItem> = {
+      value: this.props.inputValue,
+      onChange: this.handleSetInputValue,
+      id: 'CommandBoxInput',
+      autoFocus: true,
+      onBlur: this.props.close,
+    }
+
+    if (!this.props.isOpened) {
+      return (
+        <Tooltip style={{ flex: 1, justifyContent: 'start' }} placeholder="bottom" title="Show Command Palette">
+          <div>
+            <IconButton onClick={this.props.open}>
+              <KeyboardArrowRightTwoTone />
+            </IconButton>
+          </div>
         </Tooltip>
-      }
+      )
+    }
 
-        return (<div style={{flex: 1, padding: "0 2em"}}>
+    return (
+      <div style={{ flex: 1, padding: '0 2em' }}>
         <ClickAwayListener onClickAway={this.props.close}>
-            <div  ref={r=>r ? this.containerRef = r : null}>
+          <div ref={r => (r ? (this.containerRef = r) : null)}>
             <Autosuggest<CommandPaletteItem>
               theme={{
                 suggestionsList: {
@@ -106,28 +118,37 @@ export class CommandPaletteComponent extends React.Component<ReturnType<typeof m
                   fontFamily: 'monospace',
                   color: 'white',
                   border: '1px solid #333',
-                  backgroundColor: 'rgba(255,255,255,.10)'
+                  backgroundColor: 'rgba(255,255,255,.10)',
                 },
                 inputFocused: {
-                  border: '1px solid #13a5ad'
-                }
+                  border: '1px solid #13a5ad',
+                },
               }}
-              alwaysRenderSuggestions
+              alwaysRenderSuggestions={true}
               suggestions={this.props.items}
-              highlightFirstSuggestion
+              highlightFirstSuggestion={true}
               onSuggestionSelected={this.props.close}
               onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
               onSuggestionsClearRequested={this.props.clearItems}
-              getSuggestionValue={(s)=>s.primaryText}
-              renderSuggestion={(s, params)=><CommandPaletteSuggestion suggestion={s} params={params} />}
-              renderSuggestionsContainer={s => <CommandPaletteHitsContainer {...s} width={this.containerRef && this.containerRef.scrollWidth || 100} />}
+              getSuggestionValue={s => s.primaryText}
+              renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
+              renderSuggestionsContainer={s => (
+                <CommandPaletteHitsContainer
+                  {...s}
+                  width={(this.containerRef && this.containerRef.scrollWidth) || 100}
+                />
+              )}
               inputProps={inputProps}
             />
-            </div>
+          </div>
         </ClickAwayListener>
-      </div>)
-    }
+      </div>
+    )
+  }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(CommandPaletteComponent);
-export {connectedComponent as CommandPalette}
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CommandPaletteComponent)
+export { connectedComponent as CommandPalette }

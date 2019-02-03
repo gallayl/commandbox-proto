@@ -1,15 +1,15 @@
-import { rootStateType } from '../store'
 import { LoginState } from '@sensenet/client-core'
-import { Switch, Route, withRouter, RouteComponentProps } from 'react-router'
-import { connect } from 'react-redux'
 import React from 'react'
-import { Login } from './Login'
+import { connect } from 'react-redux'
+import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { rootStateType } from '../store'
 import { AuthorizedRoute } from './AuthorizedRoute'
 import { Dashboard } from './dashboard'
 import { Explore } from './explore'
-import { Setup } from './setup'
-import { Search } from './search'
 import { Iam } from './iam'
+import { Login } from './Login'
+import { Search } from './search'
+import { Setup } from './setup'
 
 const mapStateToProps = (state: rootStateType) => ({
   loginState: state.session.loginState,

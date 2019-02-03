@@ -1,7 +1,7 @@
-import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { DesktopDrawer } from '../drawer/DesktopDrawer'
+import React from 'react'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'
+import { DesktopDrawer } from '../drawer/DesktopDrawer'
 
 export const DesktopLayout: React.StatelessComponent = props => (
   <div

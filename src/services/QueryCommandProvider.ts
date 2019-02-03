@@ -1,8 +1,8 @@
 import { Injectable } from '@furystack/inject'
-import { Repository, ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { CommandPaletteItem } from '../store/CommandPalette'
 import { CommandProvider } from './CommandProviderManager'
-import { PathHelper } from '@sensenet/client-utils'
 
 @Injectable()
 export class QueryCommandProvider implements CommandProvider {

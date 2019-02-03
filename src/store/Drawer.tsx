@@ -1,10 +1,10 @@
-import { Reducer, AnyAction } from 'redux'
-import { createAction, isFromAction } from './ActionHelpers'
-import React from 'react'
 import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
+import React from 'react'
+import { AnyAction, Reducer } from 'redux'
+import { createAction, isFromAction } from './ActionHelpers'
 import { setGroups } from './Session'
 
 export interface DrawerItem {
@@ -20,7 +20,7 @@ export const setDrawerItems = createAction((items: DrawerItem[]) => ({
   items,
 }))
 
-const defaultDrawerItems: Array<DrawerItem> = [
+const defaultDrawerItems: DrawerItem[] = [
   {
     primaryText: 'Content',
     secondaryText: 'Explore the Repository',
@@ -53,7 +53,7 @@ const defaultDrawerItems: Array<DrawerItem> = [
 
 export const toggleDrawer = createAction(() => ({ type: 'toggleDrawer' }))
 
-export const drawer: Reducer<{ items: Array<DrawerItem>; opened: boolean }> = (
+export const drawer: Reducer<{ items: DrawerItem[]; opened: boolean }> = (
   state = { items: [], opened: false },
   action: AnyAction,
 ) => {

@@ -1,13 +1,13 @@
-import * as React from 'react'
+import { ClickAwayListener, IconButton, MuiThemeProvider, Toolbar, Typography } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
-import { Toolbar, IconButton, Typography, MuiThemeProvider, ClickAwayListener } from '@material-ui/core'
+import * as React from 'react'
 
-import logo from '../assets/sensenet-icon-32.png'
-import dashboard from '../assets/dashboard.PNG'
-import maros from '../assets/maros.png'
-import { CommandBox } from '../CommandBox'
 import Search from '@material-ui/icons/Search'
 import theme from '../../theme'
+import dashboard from '../assets/dashboard.PNG'
+import maros from '../assets/maros.png'
+import logo from '../assets/sensenet-icon-32.png'
+import { CommandBox } from '../CommandBox'
 
 interface LayoutState {
   isActive: boolean

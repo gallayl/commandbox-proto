@@ -1,7 +1,7 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import { EventHub } from '@sensenet/repository-events'
 import { Store } from 'redux'
 import { createAction } from './ActionHelpers'
-import { GenericContent } from '@sensenet/default-content-types'
 
 export const eventHubContentLoaded = createAction((content: GenericContent) => ({
   type: 'eventHubContentLoaded',

@@ -3,7 +3,7 @@ import React from 'react'
 
 export const Bullie: React.StatelessComponent = () => (
   <div>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -13,7 +13,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
@@ -23,7 +23,7 @@ export const Bullie: React.StatelessComponent = () => (
       eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
       sagittis orci a.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -33,7 +33,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
@@ -43,7 +43,7 @@ export const Bullie: React.StatelessComponent = () => (
       eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
       sagittis orci a.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -53,7 +53,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
@@ -63,7 +63,7 @@ export const Bullie: React.StatelessComponent = () => (
       eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
       sagittis orci a.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -73,7 +73,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
@@ -83,7 +83,7 @@ export const Bullie: React.StatelessComponent = () => (
       eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
       sagittis orci a.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -93,7 +93,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
@@ -103,7 +103,7 @@ export const Bullie: React.StatelessComponent = () => (
       eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices
       sagittis orci a.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
@@ -113,7 +113,7 @@ export const Bullie: React.StatelessComponent = () => (
       vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi
       tincidunt. Lorem donec massa sapien faucibus et molestie ac.
     </Typography>
-    <Typography paragraph>
+    <Typography paragraph={true}>
       Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim
       diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
       tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis

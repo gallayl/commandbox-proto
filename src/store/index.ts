@@ -1,12 +1,13 @@
-import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
-import { ReduxDiMiddleware } from 'redux-di-middleware'
-import { session } from './Session'
 import { Injector } from '@furystack/inject'
-import { setupRepositoryServices } from './RepositoryServices'
-import { drawer } from './Drawer'
-import { persistedState } from './PersistedState'
-import { loadedContentCache } from './LoadedContentCache'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
+import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { commandPalette } from './CommandPalette'
+import { drawer } from './Drawer'
+import { explore } from './Explore'
+import { loadedContentCache } from './LoadedContentCache'
+import { persistedState } from './PersistedState'
+import { setupRepositoryServices } from './RepositoryServices'
+import { session } from './Session'
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -16,7 +17,9 @@ export const rootReducer = combineReducers({
   persistedState,
   loadedContentCache,
   commandPalette,
+  explore,
 })
+
 export type rootStateType = ReturnType<typeof rootReducer>
 export const diMiddleware = new ReduxDiMiddleware(Injector.Default)
 
