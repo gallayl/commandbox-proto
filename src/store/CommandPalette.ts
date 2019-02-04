@@ -8,6 +8,7 @@ export interface CommandPaletteItem {
   primaryText: string
   secondaryText: string
   icon?: string
+  url: string
   avatar?: {
     abbrev: string
     url?: string

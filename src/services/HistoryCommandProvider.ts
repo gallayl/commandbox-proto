@@ -12,6 +12,7 @@ export class HistoryCommandProvider implements CommandProvider {
       {
         primaryText: 'Recently Opened Example',
         secondaryText: "You've opened recently this stuff",
+        url: '',
       },
     ]
   }

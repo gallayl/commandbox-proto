@@ -1,105 +1,96 @@
-var path = require("path");
-const webpack = require("webpack");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const autoprefixer = require("autoprefixer");
+var path = require('path')
+const webpack = require('webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
-  mode: "development",
-  entry: "./src/index.tsx",
+  mode: 'development',
+  entry: './src/index.tsx',
   output: {
-    filename: "bundle.js",
-    publicPath: "/assets/",
-    path: path.resolve(__dirname + "/bundle/assets")
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
+    publicPath: '/',
+    path: path.resolve(__dirname + '/bundle/assets'),
   },
   optimization: {
     splitChunks: {
+      chunks: 'all',
       cacheGroups: {
         commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all"
-        }
-      }
+          minChunks: 2,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
-    runtimeChunk: true
+    runtimeChunk: true,
   },
   // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+  devtool: 'source-map',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   plugins: [
-    // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: "index.html",
-        to: "./../"
-      }
-    ])
+    new BundleAnalyzerPlugin(),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+    }),
+    new MonacoWebpackPlugin({
+      languages: ['json'],
+    }),
   ],
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       {
         test: /\.css$/,
         use: [
-          require.resolve("style-loader"),
+          require.resolve('style-loader'),
           {
-            loader: require.resolve("css-loader"),
+            loader: require.resolve('css-loader'),
             options: {
-              importLoaders: 1
-            }
+              importLoaders: 1,
+            },
           },
           {
-            loader: require.resolve("postcss-loader"),
+            loader: require.resolve('postcss-loader'),
             options: {
               // Necessary for external CSS imports to work
               // https://github.com/facebookincubator/create-react-app/issues/2677
-              ident: "postcss",
+              ident: 'postcss',
               plugins: () => [
-                require("postcss-flexbugs-fixes"),
+                require('postcss-flexbugs-fixes'),
                 autoprefixer({
                   browsers: [
-                    ">1%",
-                    "last 4 versions",
-                    "Firefox ESR",
-                    "not ie < 9" // React doesn't support IE8 anyway
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9', // React doesn't support IE8 anyway
                   ],
-                  flexbox: "no-2009"
-                })
-              ]
-            }
-          }
-        ]
+                  flexbox: 'no-2009',
+                }),
+              ],
+            },
+          },
+        ],
       },
       {
-        test: [
-          /\.bmp$/,
-          /\.gif$/,
-          /\.jpe?g$/,
-          /\.png$/,
-          /\.PNG$/,
-          /\.svg$/,
-          /\.eot$/,
-          /\.woff$/,
-          /\.woff2$/,
-          /\.ttf$/
-        ],
-        loader: require.resolve("url-loader"),
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.PNG$/, /\.svg$/, /\.eot$/, /\.woff$/, /\.woff2$/, /\.ttf$/],
+        loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: "static/media/[name].[hash:8].[ext]"
-        }
-      }
-    ]
-  }
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
+    ],
+  },
 
   // When importing a module whose path matches one of the following, just
   // assume a corresponding global variable exists and use that instead.
@@ -109,4 +100,4 @@ module.exports = {
   //    "react": "React",
   //    "react-dom": "ReactDOM"
   // },
-};
+}

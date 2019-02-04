@@ -3,6 +3,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { commandPalette } from './CommandPalette'
 import { drawer } from './Drawer'
+import { editContent } from './EditContent'
 import { explore } from './Explore'
 import { loadedContentCache } from './LoadedContentCache'
 import { persistedState } from './PersistedState'
@@ -18,6 +19,7 @@ export const rootReducer = combineReducers({
   loadedContentCache,
   commandPalette,
   explore,
+  editContent,
 })
 
 export type rootStateType = ReturnType<typeof rootReducer>

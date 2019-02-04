@@ -29,12 +29,13 @@ export class InFolderSearchCommandProvider implements CommandProvider {
             .sort('Path'),
         ).toString(),
         top: 10,
-        select: ['Id', 'Path', 'Type', 'Name', 'DisplayName', 'Icon', 'Avatar'],
+        select: ['Id', 'Path', 'Type', 'Name', 'DisplayName', 'Icon', 'Avatar', 'IsFolder'],
       },
     })
     return result.d.results.map(content => ({
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
+      url: content.IsFolder ? `/content/${content.Id}` : `/edit/${content.Id}`,
     }))
   }
 }

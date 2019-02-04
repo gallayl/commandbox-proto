@@ -1,7 +1,11 @@
-import { ClickAwayListener, IconButton, MuiThemeProvider, Toolbar, Typography } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import * as React from 'react'
 
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import IconButton from '@material-ui/core/IconButton'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import Search from '@material-ui/icons/Search'
 import theme from '../../theme'
 import dashboard from '../assets/dashboard.PNG'

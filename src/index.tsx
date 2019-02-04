@@ -8,6 +8,7 @@ import { MobileLayout } from './components/layout/MobileLayout'
 import { TabletLayout } from './components/layout/TabletLayout'
 import { MainRouter } from './components/MainRouter'
 import { ResponsiveContainer } from './components/ResponsiveContainer'
+import './gif'
 import './jpg'
 import './png'
 import { store } from './store'
@@ -24,5 +25,5 @@ ReactDOM.render(
       </HashRouter>
     </Provider>
   </MuiThemeProvider>,
-  document.getElementById('example'),
+  document.getElementById('root'),
 )

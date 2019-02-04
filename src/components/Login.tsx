@@ -107,4 +107,4 @@ const connectedComponent = connect(
   mapDispatchToProps,
 )(Login)
 
-export { connectedComponent as Login }
+export default connectedComponent

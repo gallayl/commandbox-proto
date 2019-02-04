@@ -13,6 +13,7 @@ export class HelpCommandProvider implements CommandProvider {
       {
         primaryText: 'Help Item 1',
         secondaryText: 'HelpItemke Eggggy',
+        url: '',
       },
     ]
   }

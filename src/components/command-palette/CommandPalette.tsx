@@ -1,11 +1,16 @@
-import { ClickAwayListener } from '@material-ui/core'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowRightTwoTone from '@material-ui/icons/KeyboardArrowRightTwoTone'
 import { debounce } from '@sensenet/client-utils'
 import React from 'react'
-import Autosuggest, { InputProps, SuggestionsFetchRequestedParams } from 'react-autosuggest'
+import Autosuggest, {
+  InputProps,
+  SuggestionSelectedEventData,
+  SuggestionsFetchRequestedParams,
+} from 'react-autosuggest'
 import { connect } from 'react-redux'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { rootStateType } from '../../store'
 import {
   clearItems,
@@ -33,7 +38,7 @@ const mapDispatchToProps = {
 }
 
 export class CommandPaletteComponent extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > {
   private containerRef?: HTMLDivElement
 
@@ -60,6 +65,7 @@ export class CommandPaletteComponent extends React.Component<
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleSuggestionsFetchRequested = this.handleSuggestionsFetchRequested.bind(this)
     this.handleSetInputValue = this.handleSetInputValue.bind(this)
+    this.handleSelectSuggestion = this.handleSelectSuggestion.bind(this)
   }
 
   private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams) => {
@@ -78,6 +84,14 @@ export class CommandPaletteComponent extends React.Component<
 
   private handleSetInputValue(ev: React.ChangeEvent<HTMLInputElement>) {
     this.props.setInputValue(ev.target.value)
+  }
+
+  private handleSelectSuggestion(
+    ev: React.SyntheticEvent,
+    suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
+  ) {
+    ev.preventDefault()
+    this.props.history.push(suggestion.suggestion.url)
   }
 
   public render() {
@@ -127,7 +141,7 @@ export class CommandPaletteComponent extends React.Component<
               alwaysRenderSuggestions={true}
               suggestions={this.props.items}
               highlightFirstSuggestion={true}
-              onSuggestionSelected={this.props.close}
+              onSuggestionSelected={this.handleSelectSuggestion}
               onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
               onSuggestionsClearRequested={this.props.clearItems}
               getSuggestionValue={s => s.primaryText}
@@ -147,8 +161,10 @@ export class CommandPaletteComponent extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CommandPaletteComponent)
+const connectedComponent = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(CommandPaletteComponent),
+)
 export { connectedComponent as CommandPalette }

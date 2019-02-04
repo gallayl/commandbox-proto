@@ -18,7 +18,7 @@ export class QueryCommandProvider implements CommandProvider {
       oDataOptions: {
         query,
         top: 10,
-        select: ['Id', 'Path', 'Type', 'Name', 'DisplayName', 'Icon', 'Avatar'],
+        select: ['Id', 'Path', 'Type', 'Name', 'DisplayName', 'Icon', 'Avatar', 'IsFolder'],
       },
     })
     return result.d.results.map(
@@ -26,6 +26,7 @@ export class QueryCommandProvider implements CommandProvider {
         ({
           primaryText: content.DisplayName || content.Name,
           secondaryText: content.Path,
+          url: content.IsFolder ? `/content/${content.Id}` : `/edit/${content.Id}`,
           avatar:
             content.Type === 'User'
               ? {
