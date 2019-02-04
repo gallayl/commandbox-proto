@@ -1,4 +1,4 @@
-import { Repository } from '@sensenet/client-core'
+import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { AnyAction, Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
@@ -8,6 +8,7 @@ import { createAction, isFromAction } from './ActionHelpers'
 
 export interface EditContentState<T extends GenericContent> {
   currentContent: T
+  ancestors: GenericContent[]
 }
 
 const loadLock = new Semaphore(1)
@@ -29,26 +30,38 @@ export const loadContent = createAction((id: number) => ({
           select: 'all',
         },
       })
-      options.dispatch(setEditedContent(response.d))
+      const ancestorsPromise = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+        idOrPath: id,
+        method: 'GET',
+        name: 'Ancestors',
+        body: undefined,
+        oDataOptions: {
+          select: 'all',
+          orderby: [['Path', 'asc']],
+        },
+      })
+      options.dispatch(setContext(response.d, ancestorsPromise.d.results))
     } finally {
       loadLock.release()
     }
   },
 }))
 
-export const setEditedContent = createAction((content: GenericContent) => ({
+export const setContext = createAction((content: GenericContent, ancestors: GenericContent[]) => ({
   type: 'SET_EDITED_CONTENT',
   content,
+  ancestors,
 }))
 
 export const editContent: Reducer<EditContentState<GenericContent>, AnyAction> = (
-  state = { currentContent: { Id: 0 } as any },
+  state = { currentContent: { Id: 0 } as any, ancestors: [] },
   action,
 ) => {
-  if (isFromAction(action, setEditedContent)) {
+  if (isFromAction(action, setContext)) {
     return {
       ...state,
       currentContent: action.content,
+      ancestors: action.ancestors,
     }
   }
   return state
