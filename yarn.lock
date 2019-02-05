@@ -88,7 +88,7 @@
     recompose "^0.28.0"
     warning "^4.0.1"
 
-"@material-ui/core@^3.6.1":
+"@material-ui/core@^3.1.1", "@material-ui/core@^3.6.1":
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.9.2.tgz#41ed1a470e981d199829eb5d9317a671c66a6f7d"
   integrity sha512-aukR3mSH3g115St2OnqoeMRtmxzxxx+Mch7pFKRV3Tz3URExBlZwOolimjxKZpG4LGec8HlhREawafLsDzjVWQ==
@@ -129,7 +129,7 @@
     "@babel/runtime" "7.0.0-beta.42"
     recompose "^0.26.0 || ^0.27.0"
 
-"@material-ui/icons@^3.0.2":
+"@material-ui/icons@^3.0.1", "@material-ui/icons@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-3.0.2.tgz#d67a6dd1ec8312d3a88ec97944a63daeef24fe10"
   integrity sha512-QY/3gJnObZQ3O/e6WjH+0ah2M3MOgLOzCy8HTUoUx9B6dDrS18vP7Ycw3qrDEKlB6q1KNxy6CZHm5FCauWGy2g==
@@ -182,10 +182,36 @@
   resolved "https://registry.yarnpkg.com/@sensenet/client-utils/-/client-utils-1.4.1.tgz#6248fcde61b263c316f02fbd4fc3d83a1523d2ac"
   integrity sha512-QG02Jgzx9XAYsQB7gH9lOVic4g2hKykWHWANo29Sggg79zuKMYCqS+M8wc9SaPFH4V+YfV4xPMHk7lWd3Tb+Ag==
 
+"@sensenet/control-mapper@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@sensenet/control-mapper/-/control-mapper-1.0.3.tgz#64fa0fe3008df301a9a89291c815846d178af71f"
+  integrity sha512-3/Yqr6GfuUHSIT9I5z2MFAAHBoL/OghN5gO2r8mGiTBSkbhpSiVrupM5NXwUHMwhMvRTxxU4fpe+inJG8iaW6w==
+  dependencies:
+    "@sensenet/client-core" "^1.3.2"
+    "@sensenet/default-content-types" "^1.1.1"
+
 "@sensenet/default-content-types@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@sensenet/default-content-types/-/default-content-types-1.1.1.tgz#b7d9eceb65c1b40aa9af5d546c6fb7990d47a63c"
   integrity sha512-d27y0LeJ9+26Z+YI4JSxxNVk1TjuETKHQSbRgf5iY2u6jd0u0liubjIav9UBKV3xskbMhyavuBli0vv+CicM1A==
+
+"@sensenet/document-viewer-react@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@sensenet/document-viewer-react/-/document-viewer-react-1.0.3.tgz#9e770e1a6a3b60b49126339dcf05efbee11f92e8"
+  integrity sha512-GahSMfdtxEm8i5Hoeq9AhapzBD/OU6ypvHAPl0MpQIFs/ecI/BlR6pBup96TG/mrkUiIN0kITZRKneLb4adsQw==
+  dependencies:
+    "@material-ui/core" "^3.1.1"
+    "@material-ui/icons" "^3.0.1"
+    "@sensenet/client-utils" "^1.4.1"
+    "@sensenet/control-mapper" "^1.0.3"
+    react "^16.6.3"
+    react-dom "^16.6.3"
+    react-redux "^6.0.0"
+    react-test-renderer "^16.5.2"
+    redux "^4.0.0"
+    redux-di-middleware "^2.0.2"
+    redux-logger "^3.0.6"
+    uuid "^3.3.2"
 
 "@sensenet/icons-react@^1.2.4":
   version "1.2.4"
@@ -1929,6 +1955,11 @@ decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+
+deep-diff@^0.3.5:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
+  integrity sha1-wB3mPvsO7JeYgB1Ax+Da4ltYLIQ=
 
 deep-equal@^1.0.1:
   version "1.0.1"
@@ -6220,7 +6251,7 @@ react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
-react-test-renderer@^16.0.0-0, react-test-renderer@^16.6.3:
+react-test-renderer@^16.0.0-0, react-test-renderer@^16.5.2, react-test-renderer@^16.6.3:
   version "16.7.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.7.0.tgz#1ca96c2b450ab47c36ba92cd8c03fcefc52ea01c"
   integrity sha512-tFbhSjknSQ6+ttzmuGdv+SjQfmvGcq3PFKyPItohwhhOBmRoTf1We3Mlt3rJtIn85mjPXOkKV+TaKK4irvk9Yg==
@@ -6358,6 +6389,14 @@ recompose@^0.28.0:
     react-lifecycles-compat "^3.0.2"
     symbol-observable "^1.0.4"
 
+redux-di-middleware@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-2.0.3.tgz#2ae9dd3fbaadce8e97f248595b9089cc56f55661"
+  integrity sha512-MQnhTcE67bQXABVdaWHvenUeq63J2PvFmRhz23uKfOVjZugMiGwixVOUkZzcnOkfpfy7WeBqo54CvKZqUmZeiA==
+  dependencies:
+    "@furystack/inject" "^1.0.9"
+    redux "^4.0.1"
+
 redux-di-middleware@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-3.0.0.tgz#66485cf46ab7bffd67f070d705da9db220832876"
@@ -6365,6 +6404,13 @@ redux-di-middleware@^3.0.0:
   dependencies:
     "@furystack/inject" "^1.0.9"
     redux "^4.0.1"
+
+redux-logger@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/redux-logger/-/redux-logger-3.0.6.tgz#f7555966f3098f3c88604c449cf0baf5778274bf"
+  integrity sha1-91VZZvMJjzyIYExEnPC69XeCdL8=
+  dependencies:
+    deep-diff "^0.3.5"
 
 redux@^4.0.0, redux@^4.0.1:
   version "4.0.1"

@@ -1,4 +1,7 @@
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import HomeTwoTone from '@material-ui/icons/HomeTwoTone'
+import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
 import React from 'react'
 
 export interface ErrorBoundaryState {
@@ -26,18 +29,27 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
 
   public render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return (
         <div style={{ padding: '4em' }}>
-          <Typography variant="h3" color="error">
+          <Typography variant="h4" color="error">
             Something went wrong :(
           </Typography>
           <Typography variant="body1" color="textPrimary">
+            <strong>Error message: </strong>
             {this.state.error && this.state.error.message}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             {this.state.info}
           </Typography>
+          <Button onClick={() => window.location.reload()}>
+            <RefreshTwoTone />
+            Reload
+          </Button>
+
+          <Button onClick={() => window.location.replace('/')}>
+            <HomeTwoTone />
+            Home
+          </Button>
         </div>
       )
     }

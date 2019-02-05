@@ -1,13 +1,15 @@
 import { Injector } from '@furystack/inject'
-import { ConstantContent, Repository } from '@sensenet/client-core'
+import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 import { rootStateType } from '../../store'
 import { init, loadParent, select } from '../../store/Explore'
-import Breadcrumbs from '../Breadcrumbs'
+import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
+import { withInjector } from '../withInjector'
 
 const mapStateToProps = (state: rootStateType) => ({
   isInitialized: state.explore.isInitialized,
@@ -24,7 +26,9 @@ const mapDispatchToProps = {
 }
 
 export const ExploreComponent: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps<{ folderId?: string }>
+  ReturnType<typeof mapStateToProps> &
+    typeof mapDispatchToProps &
+    RouteComponentProps<{ folderId?: string }> & { injector: Injector }
 > = props => {
   const folderIdFromPath = props.match.params.folderId && parseInt(props.match.params.folderId, 10)
 
@@ -34,20 +38,33 @@ export const ExploreComponent: React.StatelessComponent<
   }
 
   if (!props.isInitialized) {
-    props.history.push(`/content/${ConstantContent.PORTAL_ROOT.Id}`)
     props.init()
     return null
   }
 
-  const repo = Injector.Default.GetInstance(Repository)
+  const repo = props.injector.GetInstance(Repository)
   return (
     <div style={{ flexGrow: 1, padding: '.3em 0' }}>
-      <Breadcrumbs content={props.ancestors} currentContent={props.parent} />
+      <Breadcrumbs
+        content={props.ancestors.map(
+          content =>
+            ({
+              displayName: content.DisplayName || content.Name,
+              title: content.Path,
+              url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+            } as BreadcrumbItem),
+        )}
+        currentContent={{
+          displayName: props.parent.DisplayName || props.parent.Name,
+          title: props.parent.Path,
+          url: props.injector.GetInstance(ContentRouteProvider).primaryAction(props.parent),
+        }}
+      />
       <ContentList<GenericContent>
         items={props.children}
         schema={repo.schemas.getSchema(GenericContent)}
         onItemDoubleClick={(_ev, item) => {
-          item.IsFolder ? props.history.push(`/content/${item.Id}`) : props.history.push(`/edit/${item.Id}`)
+          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
         }}
         fieldsToDisplay={['DisplayName', 'CreatedBy', 'CreationDate']}
         selected={props.selected}
@@ -58,10 +75,12 @@ export const ExploreComponent: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(ExploreComponent),
+const connectedComponent = withInjector(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    )(ExploreComponent),
+  ),
 )
 export default connectedComponent

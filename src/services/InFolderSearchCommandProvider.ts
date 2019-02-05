@@ -1,13 +1,14 @@
-import { Injectable } from '@furystack/inject'
+import { Injectable, Injector } from '@furystack/inject'
 import { ConstantContent, Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Query } from '@sensenet/query'
 import { CommandPaletteItem } from '../store/CommandPalette'
 import { CommandProvider } from './CommandProviderManager'
+import { ContentRouteProvider } from './ContentRouteProvider'
 
 @Injectable()
 export class InFolderSearchCommandProvider implements CommandProvider {
-  constructor(private readonly repository: Repository) {}
+  constructor(private readonly repository: Repository, private readonly injector: Injector) {}
 
   public shouldExec(searchTerm: string): boolean {
     return searchTerm[0] === '/'
@@ -35,7 +36,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
     return result.d.results.map(content => ({
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
-      url: content.IsFolder ? `/content/${content.Id}` : `/edit/${content.Id}`,
+      url: this.injector.GetInstance(ContentRouteProvider).primaryAction(content),
     }))
   }
 }

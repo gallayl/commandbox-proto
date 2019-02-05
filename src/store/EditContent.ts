@@ -9,6 +9,7 @@ import { createAction, isFromAction } from './ActionHelpers'
 export interface EditContentState<T extends GenericContent> {
   currentContent: T
   ancestors: GenericContent[]
+  error?: any
 }
 
 const loadLock = new Semaphore(1)
@@ -41,6 +42,8 @@ export const loadContent = createAction((id: number) => ({
         },
       })
       options.dispatch(setContext(response.d, ancestorsPromise.d.results))
+    } catch (error) {
+      options.dispatch(setError(error))
     } finally {
       loadLock.release()
     }
@@ -53,6 +56,11 @@ export const setContext = createAction((content: GenericContent, ancestors: Gene
   ancestors,
 }))
 
+export const setError = createAction(error => ({
+  type: 'SET_EDIT_ERROR',
+  error,
+}))
+
 export const editContent: Reducer<EditContentState<GenericContent>, AnyAction> = (
   state = { currentContent: { Id: 0 } as any, ancestors: [] },
   action,
@@ -62,6 +70,13 @@ export const editContent: Reducer<EditContentState<GenericContent>, AnyAction> =
       ...state,
       currentContent: action.content,
       ancestors: action.ancestors,
+      error: undefined,
+    }
+  }
+  if (isFromAction(action, setError)) {
+    return {
+      ...state,
+      error: action.error,
     }
   }
   return state

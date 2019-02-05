@@ -30,12 +30,12 @@ export const loadParent = createAction((id: number) => ({
         idOrPath: id,
         oDataOptions: exploreState.parentLoadOptions,
       })
-      const childrenPromise = await repo.loadCollection({
+      const childrenPromise = repo.loadCollection({
         path: parentResponse.d.Path,
         oDataOptions: exploreState.childrenLoadOptions,
       })
 
-      const ancestorsPromise = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+      const ancestorsPromise = repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
         idOrPath: parentResponse.d.Path,
         method: 'GET',
         name: 'Ancestors',
