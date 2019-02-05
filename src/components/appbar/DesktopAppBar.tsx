@@ -38,7 +38,7 @@ const DesktopAppBar: React.StatelessComponent<
       <CommandPalette />
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <Tooltip placement="bottom" title={props.user.DisplayName || props.user.Name}>
-          <Link to="/profile" style={{ textDecoration: 'none' }}>
+          <Link to={`/edit/${props.user.Id}`} style={{ textDecoration: 'none' }}>
             <UserAvatar user={props.user} repositoryUrl={props.repositoryUrl} />
           </Link>
         </Tooltip>
