@@ -1,5 +1,5 @@
-import React from 'react'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { DesktopLayout } from '../src/components/Layout/DesktopLayout'
 
 describe('Layout', () => {
