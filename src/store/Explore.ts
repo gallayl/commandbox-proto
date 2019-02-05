@@ -87,6 +87,7 @@ export const defaultExploreState: ExploreStateType = {
     select: ['IsFolder'],
   },
   ancestorsLoadOptions: {
+    select: ['IsFolder'],
     orderby: [['Path', 'asc']],
   },
 }

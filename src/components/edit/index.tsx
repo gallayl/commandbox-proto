@@ -6,6 +6,7 @@ import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
+import { withInjector } from '../withInjector'
 import JsonEditor from './JsonEditor'
 
 export const mapStateToProps = (state: rootStateType) => ({
@@ -56,10 +57,12 @@ const Editor: React.FunctionComponent<
   )
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Editor),
+const connectedComponent = withInjector(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    )(Editor),
+  ),
 )
 export default connectedComponent
