@@ -31,17 +31,24 @@ export const loadContent = createAction((id: number) => ({
           select: 'all',
         },
       })
-      const ancestorsPromise = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
-        idOrPath: id,
-        method: 'GET',
-        name: 'Ancestors',
-        body: undefined,
-        oDataOptions: {
-          select: 'all',
-          orderby: [['Path', 'asc']],
-        },
-      })
-      options.dispatch(setContext(response.d, ancestorsPromise.d.results))
+
+      // Fallback for invalid Ancestor requests (e.g. for ContentTypes)
+      let ancestorsResponse: ODataCollectionResponse<GenericContent> = { d: { results: [], __count: 0 } }
+      try {
+        ancestorsResponse = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+          idOrPath: id,
+          method: 'GET',
+          name: 'Ancestors',
+          body: undefined,
+          oDataOptions: {
+            select: 'all',
+            orderby: [['Path', 'asc']],
+          },
+        })
+      } catch {
+        /** */
+      }
+      options.dispatch(setContext(response.d, ancestorsResponse.d.results))
     } catch (error) {
       options.dispatch(setError(error))
     } finally {

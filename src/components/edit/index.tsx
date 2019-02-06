@@ -7,6 +7,7 @@ import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { withInjector } from '../withInjector'
+import ContentTypeEditor from './ContentTypeEditor'
 import JsonEditor from './JsonEditor'
 
 export const mapStateToProps = (state: rootStateType) => ({
@@ -30,10 +31,6 @@ const Editor: React.FunctionComponent<
 
   const contentId = parseInt(props.match.params.contentId as string, 10)
   props.loadContent(contentId)
-
-  if (props.currentContent.Type === 'ContentType') {
-    return <div>ContentTypeEditor</div>
-  }
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '.3em 0' }}>
       <Breadcrumbs
@@ -51,8 +48,11 @@ const Editor: React.FunctionComponent<
           url: props.injector.GetInstance(ContentRouteProvider).primaryAction(props.currentContent),
         }}
       />
-
-      <JsonEditor value={JSON.stringify(props.currentContent, undefined, 5)} />
+      {props.currentContent.Type === 'ContentType' ? (
+        <ContentTypeEditor value={JSON.stringify({ a: 1 })} />
+      ) : (
+        <JsonEditor value={JSON.stringify(props.currentContent, undefined, 5)} />
+      )}
     </div>
   )
 }
