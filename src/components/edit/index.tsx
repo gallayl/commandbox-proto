@@ -34,18 +34,23 @@ const Editor: React.FunctionComponent<
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '.3em 0' }}>
       <Breadcrumbs
+        onItemClick={(_ev, item) => {
+          props.history.push(item.url)
+        }}
         content={props.ancestors.map(
           content =>
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
               url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+              content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.currentContent.DisplayName || props.currentContent.Name,
           title: props.currentContent.Path,
           url: props.injector.GetInstance(ContentRouteProvider).primaryAction(props.currentContent),
+          content: props.currentContent,
         }}
       />
       {props.currentContent.Type === 'ContentType' ? (

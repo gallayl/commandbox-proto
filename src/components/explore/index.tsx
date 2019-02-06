@@ -1,86 +1,122 @@
 import { Injector } from '@furystack/inject'
-import { Repository } from '@sensenet/client-core'
+import { ConstantContent, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRouteProvider } from '../../services/ContentRouteProvider'
-import { rootStateType } from '../../store'
-import { init, loadParent, select } from '../../store/Explore'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { withInjector } from '../withInjector'
 
-const mapStateToProps = (state: rootStateType) => ({
-  isInitialized: state.explore.isInitialized,
-  parent: state.explore.parent,
-  children: state.explore.children,
-  ancestors: state.explore.ancestors,
-  selected: state.explore.selected,
-})
-
-const mapDispatchToProps = {
-  init,
-  loadParent,
-  select,
+export const parentLoadOptions: ODataParams<GenericContent> = {}
+export const childrenLoadOptions: ODataParams<GenericContent> = {
+  select: ['IsFolder'],
+}
+export const ancestorsLoadOptions: ODataParams<GenericContent> = {
+  select: ['IsFolder'],
+  orderby: [['Path', 'asc']],
 }
 
 export const ExploreComponent: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> &
-    typeof mapDispatchToProps &
-    RouteComponentProps<{ folderId?: string }> & { injector: Injector }
+  RouteComponentProps<{ folderId?: string }> & {
+    injector: Injector
+    style?: React.CSSProperties
+    parentLoadOptions?: ODataParams<GenericContent>
+    childrenLoadOptions?: ODataParams<GenericContent>
+    ancestorsLoadOptions?: ODataParams<GenericContent>
+  }
 > = props => {
-  const folderIdFromPath = props.match.params.folderId && parseInt(props.match.params.folderId, 10)
+  const folderIdFromPath = (props.match.params.folderId && parseInt(props.match.params.folderId, 10)) || undefined
+  const [parentId, setParentId] = useState<number>(folderIdFromPath || ConstantContent.PORTAL_ROOT.Id)
 
-  if (folderIdFromPath && folderIdFromPath !== props.parent.Id) {
-    props.loadParent(folderIdFromPath)
-    return null
-  }
-
-  if (!props.isInitialized) {
-    props.init()
-    return null
-  }
+  const [parentContent, setParent] = useState<GenericContent | null>(null)
+  const [ancestors, setAncestors] = useState<GenericContent[]>([])
+  const [children, setChildren] = useState<GenericContent[]>([])
+  const [selected, select] = useState<GenericContent[]>([])
 
   const repo = props.injector.GetInstance(Repository)
+  useEffect(() => {
+    ;(async () => {
+      const parentResponse = await repo.load({
+        idOrPath: parentId,
+        oDataOptions: {
+          ...parentLoadOptions,
+          ...props.parentLoadOptions,
+        },
+      })
+      const childrenResponse = await repo.loadCollection({
+        path: parentResponse.d.Path,
+        oDataOptions: {
+          ...childrenLoadOptions,
+          ...props.childrenLoadOptions,
+        },
+      })
+      const ancestorsResponse = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+        idOrPath: parentResponse.d.Path,
+        method: 'GET',
+        name: 'Ancestors',
+        body: undefined,
+        oDataOptions: {
+          ...ancestorsLoadOptions,
+          ...props.ancestorsLoadOptions,
+        },
+      })
+      setParent(parentResponse.d)
+      setChildren(childrenResponse.d.results)
+      setAncestors(ancestorsResponse.d.results)
+    })()
+  }, [parentId])
+
   return (
-    <div style={{ flexGrow: 1, padding: '.3em 0' }}>
-      <Breadcrumbs
-        content={props.ancestors.map(
-          content =>
-            ({
-              displayName: content.DisplayName || content.Name,
-              title: content.Path,
-              url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
-            } as BreadcrumbItem),
-        )}
-        currentContent={{
-          displayName: props.parent.DisplayName || props.parent.Name,
-          title: props.parent.Path,
-          url: props.injector.GetInstance(ContentRouteProvider).primaryAction(props.parent),
-        }}
-      />
-      <ContentList<GenericContent>
-        items={props.children}
-        schema={repo.schemas.getSchema(GenericContent)}
-        onItemDoubleClick={(_ev, item) => {
-          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
-        }}
-        fieldsToDisplay={['DisplayName', 'CreatedBy', 'CreationDate']}
-        selected={props.selected}
-        onRequestSelectionChange={props.select}
-        icons={{}}
-      />
+    <div style={{ flexGrow: 1, padding: '.3em 0', ...props.style }}>
+      {parentContent ? (
+        <Breadcrumbs
+          content={ancestors.map(
+            content =>
+              ({
+                displayName: content.DisplayName || content.Name,
+                title: content.Path,
+                url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+                content,
+              } as BreadcrumbItem),
+          )}
+          currentContent={{
+            displayName: parentContent.DisplayName || parentContent.Name,
+            title: parentContent.Path,
+            url: props.injector.GetInstance(ContentRouteProvider).primaryAction(parentContent),
+            content: parentContent,
+          }}
+          onItemClick={(_ev, item) => {
+            setParentId(item.content.Id)
+            props.history.push(item.url)
+          }}
+        />
+      ) : null}
+      <div style={{ height: 'calc(100% - 36px)', overflow: 'auto' }}>
+        <ContentList<GenericContent>
+          items={children}
+          schema={repo.schemas.getSchema(GenericContent)}
+          onItemDoubleClick={(_ev, item) => {
+            props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
+            setParentId(item.Id)
+          }}
+          fieldsToDisplay={['DisplayName', 'CreatedBy', 'CreationDate']}
+          selected={selected}
+          onRequestSelectionChange={select}
+          icons={{}}
+        />
+      </div>
     </div>
   )
 }
 
 const connectedComponent = withInjector(
   withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(ExploreComponent),
+    // connect(
+    //   mapStateToProps,
+    //   mapDispatchToProps,
+    // )(ExploreComponent),
+    ExploreComponent,
   ),
 )
 export default connectedComponent

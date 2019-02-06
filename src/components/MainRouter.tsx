@@ -12,7 +12,7 @@ const mapStateToProps = (state: rootStateType) => ({
   currentUser: state.session.currentUser,
 })
 
-const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "explore" */ './explore'))
+const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "explore" */ './explore/Commander'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(async () => await import(/* webpackChunkName: "search" */ './search'))
 const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
