@@ -31,8 +31,7 @@ export const ExploreComponent: React.StatelessComponent<
     ancestorsLoadOptions?: ODataParams<GenericContent>
   }
 > = props => {
-  const folderIdFromPath = (props.match.params.folderId && parseInt(props.match.params.folderId, 10)) || undefined
-  const [parentId, setParentId] = useState<number>(folderIdFromPath || ConstantContent.PORTAL_ROOT.Id)
+  let folderIdFromPath = (props.match.params.folderId && parseInt(props.match.params.folderId, 10)) || undefined
 
   const [parentContent, setParent] = useState<GenericContent | null>(null)
   const [ancestors, setAncestors] = useState<GenericContent[]>([])
@@ -42,8 +41,9 @@ export const ExploreComponent: React.StatelessComponent<
   const repo = props.injector.GetInstance(Repository)
   useEffect(() => {
     ;(async () => {
+      folderIdFromPath = (props.match.params.folderId && parseInt(props.match.params.folderId, 10)) || undefined
       const parentResponse = await repo.load({
-        idOrPath: parentId,
+        idOrPath: folderIdFromPath || ConstantContent.PORTAL_ROOT.Id,
         oDataOptions: {
           ...parentLoadOptions,
           ...props.parentLoadOptions,
@@ -70,7 +70,7 @@ export const ExploreComponent: React.StatelessComponent<
       setChildren(childrenResponse.d.results)
       setAncestors(ancestorsResponse.d.results)
     })()
-  }, [parentId])
+  }, [props.location.pathname])
 
   return (
     <div style={{ flexGrow: 1, padding: '.3em 0', ...props.style }}>
@@ -92,7 +92,6 @@ export const ExploreComponent: React.StatelessComponent<
             content: parentContent,
           }}
           onItemClick={(_ev, item) => {
-            setParentId(item.content.Id)
             props.history.push(item.url)
           }}
         />
@@ -103,7 +102,6 @@ export const ExploreComponent: React.StatelessComponent<
           schema={repo.schemas.getSchema(GenericContent)}
           onItemDoubleClick={(_ev, item) => {
             props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
-            setParentId(item.Id)
           }}
           getSelectionControl={(isSelected, content) => {
             return (
@@ -137,13 +135,5 @@ export const ExploreComponent: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withInjector(
-  withRouter(
-    // connect(
-    //   mapStateToProps,
-    //   mapDispatchToProps,
-    // )(ExploreComponent),
-    ExploreComponent,
-  ),
-)
+const connectedComponent = withRouter(withInjector(ExploreComponent))
 export default connectedComponent

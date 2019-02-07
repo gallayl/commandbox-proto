@@ -96,7 +96,7 @@ export class CommandPaletteComponent extends React.Component<
 
   public render() {
     const inputProps: InputProps<CommandPaletteItem> = {
-      value: this.props.inputValue,
+      value: this.props.inputValue || '',
       onChange: this.handleSetInputValue,
       id: 'CommandBoxInput',
       autoFocus: true,

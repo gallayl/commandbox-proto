@@ -7,6 +7,9 @@ export class ContentRouteProvider {
     if (content.IsFolder) {
       return `/content/${content.Id}`
     }
+    if (content.Type === 'File') {
+      return `/preview/${content.Id}`
+    }
     return `/edit/${content.Id}`
   }
 }

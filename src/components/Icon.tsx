@@ -6,12 +6,12 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, User } from '@sensenet/default-content-types'
+import { File as SnFile } from '@sensenet/default-content-types'
 import React from 'react'
 import { UserAvatar } from './UserAvatar'
 import { withInjector } from './withInjector'
-import { File as SnFile } from '@sensenet/default-content-types'
-import { PathHelper } from '@sensenet/client-utils'
 
 export interface IconOptions {
   style?: React.CSSProperties

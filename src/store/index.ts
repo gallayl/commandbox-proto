@@ -1,14 +1,15 @@
 import { Injector } from '@furystack/inject'
+import { sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react/dist/store'
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { commandPalette } from './CommandPalette'
 import { drawer } from './Drawer'
 import { editContent } from './EditContent'
-import { explore } from './Explore'
 import { loadedContentCache } from './LoadedContentCache'
 import { persistedState } from './PersistedState'
 import { setupRepositoryServices } from './RepositoryServices'
 import { session } from './Session'
+const sensenetDocumentViewer = sensenetDocumentViewerReducer
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -18,8 +19,8 @@ export const rootReducer = combineReducers({
   persistedState,
   loadedContentCache,
   commandPalette,
-  explore,
   editContent,
+  sensenetDocumentViewer,
 })
 
 export type rootStateType = ReturnType<typeof rootReducer>

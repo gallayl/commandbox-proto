@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { ConstantContent, Repository } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../store/CommandPalette'
 import { CommandProvider } from './CommandProviderManager'
 import { ContentRouteProvider } from './ContentRouteProvider'
-import { GenericContent } from '@sensenet/default-content-types'
 
 @Injectable()
 export class QueryCommandProvider implements CommandProvider {
@@ -27,7 +27,7 @@ export class QueryCommandProvider implements CommandProvider {
         ({
           primaryText: content.DisplayName || content.Name,
           secondaryText: content.Path,
-          url: this.injector.GetInstance(ContentRouteProvider).primaryAction(ConstantContent.PORTAL_ROOT),
+          url: this.injector.GetInstance(ContentRouteProvider).primaryAction(content),
           content,
           icon: content.Icon,
         } as CommandPaletteItem),

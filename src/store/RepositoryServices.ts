@@ -6,6 +6,7 @@ import { Store } from 'redux'
 import { store } from '.'
 import { CheatCommandProvider } from '../services/CheatCommandProvider'
 import { CommandProviderManager } from '../services/CommandProviderManager'
+import { getViewerSettings } from '../services/GetViewerSettings'
 import { HelpCommandProvider } from '../services/HelpCommandProvider'
 import { HistoryCommandProvider } from '../services/HistoryCommandProvider'
 import { InFolderSearchCommandProvider } from '../services/InFolderSearchCommandProvider'
@@ -23,6 +24,10 @@ export const setupRepositoryServices = async (options: {
     select: 'all',
   })
   options.injector.SetInstance(repo)
+
+  const viewerSettings = getViewerSettings(repo)
+  options.injector.SetInstance(viewerSettings)
+
   const eventHub = new EventHub(repo)
 
   const commandProviderManager = options.injector.GetInstance(CommandProviderManager)

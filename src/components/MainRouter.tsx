@@ -20,6 +20,7 @@ const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './Login'))
 const EditComponent = lazy(async () => await import(/* webpackChunkName: "Edit" */ './Edit'))
+const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & RouteComponentProps> = props => {
   return (
@@ -34,6 +35,11 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
             <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
             <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
             <AuthorizedRoute path="/edit/:contentId?" render={() => <EditComponent />} authorize={() => true} />
+            <AuthorizedRoute
+              path="/preview/:documentId?"
+              render={() => <DocumentViewerComponent />}
+              authorize={() => true}
+            />
             <Route path="/" render={() => <DashboardComponent />} />
           </Switch>
         ) : (
