@@ -115,7 +115,7 @@ export const ExploreComponent: React.StatelessComponent<
                 {isSelected ? (
                   <Checkbox checked={true} style={{ margin: 0, padding: 0 }} />
                 ) : (
-                  <Icon item={content} style={{ verticalAlign: 'middle' }} />
+                  <Icon item={content} style={{ verticalAlign: 'middle', maxHeight: '24px' }} />
                 )}
               </div>
             )
