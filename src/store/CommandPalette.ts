@@ -1,3 +1,4 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from '.'
@@ -9,10 +10,7 @@ export interface CommandPaletteItem {
   secondaryText: string
   icon?: string
   url: string
-  avatar?: {
-    abbrev: string
-    url?: string
-  }
+  content?: GenericContent
 }
 
 export interface CommandPaletteState {

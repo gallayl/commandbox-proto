@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { ConstantContent, Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { CommandPaletteItem } from '../store/CommandPalette'
 import { CommandProvider } from './CommandProviderManager'
@@ -20,7 +21,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
     const parentPath = PathHelper.trimSlashes(
       PathHelper.joinPaths(...segments.slice(0, segments.length - 1)) || currentPath,
     )
-    const result = await this.repository.loadCollection({
+    const result = await this.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: new Query(q =>
@@ -30,12 +31,13 @@ export class InFolderSearchCommandProvider implements CommandProvider {
             .sort('Path'),
         ).toString(),
         top: 10,
-        select: ['Id', 'Path', 'Type', 'Name', 'DisplayName', 'Icon', 'Avatar', 'IsFolder'],
+        select: 'all',
       },
     })
     return result.d.results.map(content => ({
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
+      content,
       url: this.injector.GetInstance(ContentRouteProvider).primaryAction(content),
     }))
   }

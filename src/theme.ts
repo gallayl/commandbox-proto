@@ -1,9 +1,12 @@
+import { indigo, teal } from '@material-ui/core/colors'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import zIndex from '@material-ui/core/styles/zIndex'
 
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: indigo,
+    secondary: teal,
   },
   typography: {
     useNextVariants: true,

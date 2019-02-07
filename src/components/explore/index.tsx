@@ -1,4 +1,6 @@
 import { Injector } from '@furystack/inject'
+import Checkbox from '@material-ui/core/Checkbox'
+import TableCell from '@material-ui/core/TableCell'
 import { ConstantContent, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -6,14 +8,17 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
+import { Icon } from '../Icon'
 import { withInjector } from '../withInjector'
 
 export const parentLoadOptions: ODataParams<GenericContent> = {}
 export const childrenLoadOptions: ODataParams<GenericContent> = {
-  select: ['IsFolder'],
+  select: 'all',
+  expand: ['CreatedBy', 'Actions'],
+  orderby: ['DisplayName', 'Name'],
 }
 export const ancestorsLoadOptions: ODataParams<GenericContent> = {
-  select: ['IsFolder'],
+  select: 'IsFolder',
   orderby: [['Path', 'asc']],
 }
 
@@ -99,6 +104,28 @@ export const ExploreComponent: React.StatelessComponent<
           onItemDoubleClick={(_ev, item) => {
             props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
             setParentId(item.Id)
+          }}
+          getSelectionControl={(isSelected, content) => {
+            return (
+              <div
+                style={{ textAlign: 'center', marginLeft: '1em' }}
+                onClick={() => {
+                  select([content])
+                }}>
+                {isSelected ? (
+                  <Checkbox checked={true} style={{ margin: 0, padding: 0 }} />
+                ) : (
+                  <Icon item={content} style={{ verticalAlign: 'middle' }} />
+                )}
+              </div>
+            )
+          }}
+          fieldComponent={options => {
+            switch (options.field) {
+              case 'DisplayName':
+                return <TableCell padding={'none'}>{options.content.DisplayName || options.content.Name}</TableCell>
+            }
+            return null
           }}
           fieldsToDisplay={['DisplayName', 'CreatedBy', 'CreationDate']}
           selected={selected}
