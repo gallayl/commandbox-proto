@@ -9,7 +9,7 @@ import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { withInjector } from '../withInjector'
 import { ContentTypeEditor } from './ContentTypeEditor'
-import JsonEditor from './JsonEditor'
+import { GenericContentEditor } from './GenericContentEditor'
 import { SettingsEditor } from './SettingsEditor'
 
 export const mapStateToProps = (state: rootStateType) => ({
@@ -55,12 +55,12 @@ const Editor: React.FunctionComponent<
           content: props.currentContent,
         }}
       />
-      {props.currentContent.Type === 'ContentType' ? (
+      {props.currentContent.Id === 0 ? null : props.currentContent.Type === 'ContentType' ? (
         <ContentTypeEditor content={props.currentContent} />
       ) : props.currentContent.Type === 'Settings' || props.currentContent.Type === 'PortalSettings' ? (
         <SettingsEditor content={props.currentContent as Settings} />
       ) : (
-        <JsonEditor value={JSON.stringify(props.currentContent, undefined, 5)} />
+        <GenericContentEditor content={props.currentContent} />
       )}
     </div>
   )
