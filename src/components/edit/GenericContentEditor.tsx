@@ -12,7 +12,7 @@ const GenericContentEditor: React.FunctionComponent<{ injector: Injector; conten
   const [savedContent, setSavedContent] = useState({ ...props.content })
 
   return (
-    <div style={{ width: '100%', height: '100%', padding: '3em' }}>
+    <div style={{ width: '100%', height: '100%', padding: '3em', overflow: 'auto' }}>
       <EditView
         schema={schema}
         content={props.content}
