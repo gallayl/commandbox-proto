@@ -1,10 +1,13 @@
+import { Injector } from '@furystack/inject'
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { withInjector } from '../withInjector'
 import ExploreComponent from './index'
+import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 
 export const Commander: React.StatelessComponent<
-  RouteComponentProps<{ leftParent?: string; rightParent?: string }>
+  RouteComponentProps<{ leftParent?: string; rightParent?: string }> & { injector: Injector }
 > = props => {
   const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const getRightFromPath = () =>
@@ -34,7 +37,7 @@ export const Commander: React.StatelessComponent<
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <ExploreComponent
         onActivateItem={item => {
-          console.log(item)
+          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
         }}
         containerRef={r => setLeftPanelRef(r)}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
@@ -46,7 +49,7 @@ export const Commander: React.StatelessComponent<
       />
       <ExploreComponent
         onActivateItem={item => {
-          console.log(item)
+          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
         }}
         containerRef={r => setRightPanelRef(r)}
         parentId={rightParentId}
@@ -60,4 +63,4 @@ export const Commander: React.StatelessComponent<
   )
 }
 
-export default withRouter(Commander)
+export default withInjector(withRouter(Commander))

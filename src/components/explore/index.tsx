@@ -36,6 +36,14 @@ export const ExploreComponent: React.StatelessComponent<{
 
   const prevParent = useRef(parentContent)
 
+  const handleActivateItem = (item: GenericContent) => {
+    if (item.IsFolder) {
+      setParent(item)
+    } else {
+      props.onActivateItem(item)
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       const parentResponse = await repo.load({
@@ -99,7 +107,7 @@ export const ExploreComponent: React.StatelessComponent<{
   }, [parentContent])
 
   return (
-    <div style={{ flexGrow: 1, padding: '.3em 0', ...props.style }}>
+    <div style={{ ...props.style }}>
       {parentContent ? (
         <Breadcrumbs
           content={ancestors.map(
@@ -170,7 +178,7 @@ export const ExploreComponent: React.StatelessComponent<{
               break
             }
             case 'Enter': {
-              setParent(activeContent)
+              handleActivateItem(activeContent)
               break
             }
             case 'Backspace': {
@@ -211,13 +219,7 @@ export const ExploreComponent: React.StatelessComponent<{
               select([content])
             }
           }}
-          onItemDoubleClick={(_ev, item) => {
-            if (item.IsFolder) {
-              setParent(item)
-            } else {
-              props.onActivateItem(item)
-            }
-          }}
+          onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
           getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
           fieldComponent={options => {
             switch (options.field) {
