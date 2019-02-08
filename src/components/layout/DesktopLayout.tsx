@@ -16,7 +16,7 @@ export const DesktopLayout: React.StatelessComponent = props => (
     }}>
     <CssBaseline />
     <DesktopAppBar />
-    <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
+    <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'row', height: '100%' }}>
       <DesktopDrawer />
       <div style={{ display: 'flex', flexGrow: 1 }}>{props.children}</div>
     </div>

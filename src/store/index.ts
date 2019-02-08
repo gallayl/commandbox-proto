@@ -43,5 +43,17 @@ setupRepositoryServices({
   repositoryConfig: {
     sessionLifetime: 'expiration',
     repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+    requiredSelect: [
+      'Id',
+      'Path',
+      'Name',
+      'Type',
+      'DisplayName',
+      'Icon',
+      'IsFolder',
+      'ParentId',
+      'Version',
+      'PageCount' as any,
+    ],
   },
 })

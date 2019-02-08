@@ -31,6 +31,11 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
         ) : props.loginState === LoginState.Authenticated ? (
           <Switch>
             <AuthorizedRoute path="/content/:folderId?" render={() => <ExploreComponent />} authorize={() => true} />
+            <AuthorizedRoute
+              path="/commander/:leftParent?/:rightParent?"
+              render={() => <ExploreComponent />}
+              authorize={() => true}
+            />
             <AuthorizedRoute path="/search" render={() => <SearchComponent />} authorize={() => true} />
             <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
             <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
