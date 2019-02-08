@@ -5,7 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 export class ContentRouteProvider {
   public primaryAction<T extends GenericContent>(content: T) {
     if (content.IsFolder) {
-      return `/content/${content.Id}`
+      return `/commander/${content.Id}`
     }
     if (content.Type === 'File') {
       return `/preview/${content.Id}`

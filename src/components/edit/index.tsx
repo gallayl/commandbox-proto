@@ -1,4 +1,5 @@
 import { Injector } from '@furystack/inject'
+import { Settings } from '@sensenet/default-content-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -7,8 +8,9 @@ import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { withInjector } from '../withInjector'
-import ContentTypeEditor from './ContentTypeEditor'
+import { ContentTypeEditor } from './ContentTypeEditor'
 import JsonEditor from './JsonEditor'
+import { SettingsEditor } from './SettingsEditor'
 
 export const mapStateToProps = (state: rootStateType) => ({
   currentContent: state.editContent.currentContent,
@@ -54,7 +56,9 @@ const Editor: React.FunctionComponent<
         }}
       />
       {props.currentContent.Type === 'ContentType' ? (
-        <ContentTypeEditor value={JSON.stringify({ a: 1 })} />
+        <ContentTypeEditor content={props.currentContent} />
+      ) : props.currentContent.Type === 'Settings' || props.currentContent.Type === 'PortalSettings' ? (
+        <SettingsEditor content={props.currentContent as Settings} />
       ) : (
         <JsonEditor value={JSON.stringify(props.currentContent, undefined, 5)} />
       )}
