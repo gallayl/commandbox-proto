@@ -20,6 +20,7 @@ export const setupRepositoryServices = async (options: {
   store: Store
 }) => {
   const repo = new Repository(options.repositoryConfig)
+  repo.reloadSchema()
   FormsAuthenticationService.Setup(repo, {
     select: 'all',
   })

@@ -2,6 +2,7 @@ import { Injector } from '@furystack/inject'
 import { sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react/dist/store'
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
+import { commander } from './Commander'
 import { commandPalette } from './CommandPalette'
 import { drawer } from './Drawer'
 import { editContent } from './EditContent'
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
   commandPalette,
   editContent,
   sensenetDocumentViewer,
+  commander,
 })
 
 export type rootStateType = ReturnType<typeof rootReducer>

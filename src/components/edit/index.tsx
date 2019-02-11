@@ -1,4 +1,5 @@
 import { Injector } from '@furystack/inject'
+import { Repository } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -31,6 +32,9 @@ const Editor: React.FunctionComponent<
     throw props.error
   }
 
+  const repo = props.injector.GetInstance(Repository)
+  const schema = repo.schemas.getSchemaByName(props.currentContent.Type)
+
   const contentId = parseInt(props.match.params.contentId as string, 10)
   props.loadContent(contentId)
   return (
@@ -57,7 +61,7 @@ const Editor: React.FunctionComponent<
       />
       {props.currentContent.Id === 0 ? null : props.currentContent.Type === 'ContentType' ? (
         <ContentTypeEditor content={props.currentContent} />
-      ) : props.currentContent.Type === 'Settings' || props.currentContent.Type === 'PortalSettings' ? (
+      ) : props.currentContent.Type === 'Settings' || schema.ParentTypeName === 'Settings' ? (
         <SettingsEditor content={props.currentContent as Settings} />
       ) : (
         <GenericContentEditor content={props.currentContent} />

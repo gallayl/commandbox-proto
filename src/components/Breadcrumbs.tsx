@@ -33,7 +33,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
         <KeyboardArrowRight style={{ verticalAlign: 'middle', height: '16px' }} />
       </span>
     ))}
-    <Tooltip title={props.currentContent.content.Path}>
+    <Tooltip title={props.currentContent.content.Path || '/'}>
       <Button onClick={ev => props.onItemClick(ev, props.currentContent)}>
         <Icon item={props.currentContent.content} style={{ marginRight: '0.3em', height: '0.7em' }} />
         {props.currentContent.displayName}

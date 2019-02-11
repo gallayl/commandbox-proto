@@ -7,7 +7,7 @@ export class ContentRouteProvider {
     if (content.IsFolder) {
       return `/commander/${content.Id}`
     }
-    if (content.Type === 'File') {
+    if (content.Type === 'File' || content.Type === 'Image') {
       return `/preview/${content.Id}`
     }
     return `/edit/${content.Id}`
