@@ -9,8 +9,8 @@ import { ContentRouteProvider } from '../services/ContentRouteProvider'
 import { rootStateType } from '../store'
 import { createCollectionState } from '../store/CollectionState'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { SelectionControl } from './SelectionControl'
 import { withInjector } from './withInjector'
-import { SelectionControl } from './explore/SelectionControl'
 
 export const createCommandListPanel = (collectionState: ReturnType<typeof createCollectionState>) => {
   const mapStateToProps = (state: rootStateType) => ({

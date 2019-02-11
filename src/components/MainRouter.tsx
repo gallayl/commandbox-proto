@@ -22,6 +22,10 @@ const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login
 const EditComponent = lazy(async () => await import(/* webpackChunkName: "Edit" */ './Edit'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
+const PersonalSettingsEditor = lazy(
+  async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
+)
+
 const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & RouteComponentProps> = props => {
   return (
     <ErrorBoundary>
@@ -43,6 +47,11 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
             <AuthorizedRoute
               path="/preview/:documentId?"
               render={() => <DocumentViewerComponent />}
+              authorize={() => true}
+            />
+            <AuthorizedRoute
+              path="/personalSettings"
+              render={() => <PersonalSettingsEditor />}
               authorize={() => true}
             />
             <Route path="/" render={() => <DashboardComponent />} />
