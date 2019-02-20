@@ -5,6 +5,7 @@ import { ObservableValue } from '@sensenet/client-utils'
 const settingsKey = `SN-ADMIN-USER-SETTINGS`
 
 export interface PersonalSettingType {
+  theme: 'dark' | 'light'
   content: { browseType: 'explorer' | 'commander' }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
@@ -14,6 +15,7 @@ export interface PersonalSettingType {
 }
 
 export const defaultSettings: PersonalSettingType = {
+  theme: 'dark',
   content: {
     browseType: 'explorer',
   },

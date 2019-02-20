@@ -1,18 +1,18 @@
-import { Injector } from '@furystack/inject'
 import { ConstantContent } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 import { left, right } from '../../store/Commander'
 import { createCommandListPanel } from '../ContentListPanel'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
 
 const LeftControl = createCommandListPanel(left)
 const RightControl = createCommandListPanel(right)
 
 export const Commander: React.StatelessComponent<
-  RouteComponentProps<{ leftParent?: string; rightParent?: string }> & { injector: Injector }
+  RouteComponentProps<{ leftParent?: string; rightParent?: string }>
 > = props => {
+  const injector = useContext(InjectorContext)
   const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const getRightFromPath = () =>
     parseInt(props.match.params.rightParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
@@ -40,7 +40,7 @@ export const Commander: React.StatelessComponent<
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <LeftControl
         onActivateItem={item => {
-          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
+          props.history.push(injector.GetInstance(ContentRouteProvider).primaryAction(item))
         }}
         containerRef={r => setLeftPanelRef(r)}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
@@ -52,7 +52,7 @@ export const Commander: React.StatelessComponent<
       />
       <RightControl
         onActivateItem={item => {
-          props.history.push(props.injector.GetInstance(ContentRouteProvider).primaryAction(item))
+          props.history.push(injector.GetInstance(ContentRouteProvider).primaryAction(item))
         }}
         containerRef={r => setRightPanelRef(r)}
         parentId={rightParentId}
@@ -66,4 +66,4 @@ export const Commander: React.StatelessComponent<
   )
 }
 
-export default withInjector(withRouter(Commander))
+export default withRouter(Commander)

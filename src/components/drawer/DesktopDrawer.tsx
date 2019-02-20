@@ -1,4 +1,3 @@
-import { Injector } from '@furystack/inject'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -7,13 +6,15 @@ import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { matchPath, NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router'
+import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { rootStateType } from '../../store'
 import { toggleDrawer } from '../../store/Drawer'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
+import { ThemeContext } from '../ThemeContext'
 
 const mapStateToProps = (state: rootStateType) => ({
   items: state.drawer.items,
@@ -25,10 +26,12 @@ const mapDispatchToProps = {
 }
 
 const DesktopDrawer: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps & { injector: Injector }
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > = props => {
   const [drawerConfig, setDrawerConfig] = useState(defaultSettings.drawer)
-  const service = props.injector.GetInstance(PersonalSettings)
+  const injector = useContext(InjectorContext)
+  const theme = useContext(ThemeContext)
+  const service = injector.GetInstance(PersonalSettings)
   useEffect(() => {
     const subscription = service.currentValue.subscribe(v => {
       setDrawerConfig(v.drawer)
@@ -53,7 +56,7 @@ const DesktopDrawer: React.StatelessComponent<
           overflow: 'hidden',
           justifyContent: 'space-between',
           flexDirection: 'column',
-          backgroundColor: '#222',
+          backgroundColor: theme.palette.background.default, // '#222',
           paddingTop: '1em',
         }}>
         <div style={{ paddingTop: '1em' }}>
@@ -107,12 +110,10 @@ const DesktopDrawer: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withInjector(
-  withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(DesktopDrawer),
-  ),
+const connectedComponent = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(DesktopDrawer),
 )
 export { connectedComponent as DesktopDrawer }

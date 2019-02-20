@@ -1,8 +1,8 @@
 import { indigo, teal } from '@material-ui/core/colors'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import zIndex from '@material-ui/core/styles/zIndex'
 
-const theme = createMuiTheme({
+const theme: ThemeOptions = {
   palette: {
     type: 'dark',
     primary: indigo,
@@ -21,10 +21,9 @@ const theme = createMuiTheme({
     MuiAppBar: {
       root: {
         zIndex: zIndex.drawer + 1,
-        backgroundColor: '#2a2a2a !important',
       },
     },
   },
-})
+}
 
 export default theme

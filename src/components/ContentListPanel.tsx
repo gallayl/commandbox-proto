@@ -1,16 +1,15 @@
-import { Injector } from '@furystack/inject'
 import TableCell from '@material-ui/core/TableCell'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { ContentRouteProvider } from '../services/ContentRouteProvider'
 import { rootStateType } from '../store'
 import { createCollectionState } from '../store/CollectionState'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { InjectorContext } from './InjectorContext'
 import { SelectionControl } from './SelectionControl'
-import { withInjector } from './withInjector'
 
 export const createCommandListPanel = (collectionState: ReturnType<typeof createCollectionState>) => {
   const mapStateToProps = (state: rootStateType) => ({
@@ -25,7 +24,6 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
 
   const CollectionComponent: React.StatelessComponent<
     {
-      injector: Injector
       parentId: number
       onParentChange: (newParent: GenericContent) => void
       onTabRequest: () => void
@@ -37,7 +35,8 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
   > = props => {
     const { ancestors, children, parent, activeContent, selected } = props.collection
     const { setActiveContent, select, loadParent } = props
-    const repo = props.injector.GetInstance(Repository)
+    const injector = useContext(InjectorContext)
+    const repo = injector.GetInstance(Repository)
 
     if (!props.collection.parent.Id) {
       loadParent(props.parentId)
@@ -61,14 +60,14 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
                 ({
                   displayName: content.DisplayName || content.Name,
                   title: content.Path,
-                  url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+                  url: injector.GetInstance(ContentRouteProvider).primaryAction(content),
                   content,
                 } as BreadcrumbItem),
             )}
             currentContent={{
               displayName: parent.DisplayName || parent.Name,
               title: parent.Path,
-              url: props.injector.GetInstance(ContentRouteProvider).primaryAction(parent),
+              url: injector.GetInstance(ContentRouteProvider).primaryAction(parent),
               content: parent,
             }}
             onItemClick={(_ev, item) => {
@@ -187,10 +186,8 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
     )
   }
 
-  return withInjector(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(CollectionComponent),
-  )
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(CollectionComponent)
 }

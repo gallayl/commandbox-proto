@@ -1,16 +1,16 @@
-import { Injector } from '@furystack/inject'
 import { Repository, Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Settings } from '@sensenet/default-content-types'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
 
-const SettingsEditor: React.FunctionComponent<{ injector: Injector; content: Settings }> = props => {
+const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => {
+  const injector = useContext(InjectorContext)
   const [currentContentId, setCurrentContentId] = useState(props.content.Id)
   const [loadTimestamp, setLoadTimestamp] = useState(new Date())
   const [settingsValue, setSettingsValue] = useState('')
-  const repo = props.injector.GetInstance(Repository)
+  const repo = injector.GetInstance(Repository)
   useEffect(() => {
     ;(async () => {
       const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
@@ -60,6 +60,6 @@ const SettingsEditor: React.FunctionComponent<{ injector: Injector; content: Set
   )
 }
 
-const extendedComponent = withInjector(SettingsEditor)
+const extendedComponent = SettingsEditor
 
 export { extendedComponent as SettingsEditor }

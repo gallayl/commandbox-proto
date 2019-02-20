@@ -1,19 +1,16 @@
-import { Injector } from '@furystack/inject'
 import { Repository, Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Settings } from '@sensenet/default-content-types'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { SensenetCtdLanguage } from '../../utils/monaco-languages/sensenet-ctd'
-import { withInjector } from '../withInjector'
-SensenetCtdLanguage.Register()
+import { InjectorContext } from '../InjectorContext'
 
-const ContentTypeEditor: React.FunctionComponent<{ injector: Injector; content: Settings }> = props => {
+const ContentTypeEditor: React.FunctionComponent<{ content: Settings }> = props => {
   const [currentContentId, setCurrentContentId] = useState(props.content.Id)
   const [ctdValue, setCtdValue] = useState('')
   const [loadTimestamp, setLoadTimestamp] = useState(new Date())
-
-  const repo = props.injector.GetInstance(Repository)
+  const injector = useContext(InjectorContext)
+  const repo = injector.GetInstance(Repository)
   useEffect(() => {
     ;(async () => {
       const binaryPath = `binaryhandler.ashx?nodeid=${props.content.Id}&propertyname=Binary`
@@ -63,6 +60,6 @@ const ContentTypeEditor: React.FunctionComponent<{ injector: Injector; content: 
   )
 }
 
-const extendedComponent = withInjector(ContentTypeEditor)
+const extendedComponent = ContentTypeEditor
 
 export { extendedComponent as ContentTypeEditor }

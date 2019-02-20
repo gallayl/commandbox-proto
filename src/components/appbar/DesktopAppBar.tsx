@@ -1,4 +1,3 @@
-import { Injector } from '@furystack/inject'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -6,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { LoginState } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/sensenet-icon-32.png'
@@ -14,8 +13,9 @@ import { defaultSettings, PersonalSettings } from '../../services/PersonalSettin
 import { rootStateType } from '../../store'
 import { logoutFromRepository } from '../../store/Session'
 import { CommandPalette } from '../command-palette/CommandPalette'
+import { InjectorContext } from '../InjectorContext'
+import { ThemeContext } from '../ThemeContext'
 import { UserAvatar } from '../UserAvatar'
-import { withInjector } from '../withInjector'
 
 const mapStateToProps = (state: rootStateType) => ({
   repositoryUrl: state.persistedState.lastRepositoryUrl,
@@ -28,10 +28,12 @@ const mapDispatchToProps = {
 }
 
 const DesktopAppBar: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { injector: Injector }
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > = props => {
+  const injector = useContext(InjectorContext)
+  const theme = useContext(ThemeContext)
   const [commandPaletteConfig, setCommandPaletteConfig] = useState(defaultSettings.commandPalette)
-  const service = props.injector.GetInstance(PersonalSettings)
+  const service = injector.GetInstance(PersonalSettings)
   useEffect(() => {
     const subscription = service.currentValue.subscribe(v => {
       setCommandPaletteConfig(v.commandPalette)
@@ -40,11 +42,11 @@ const DesktopAppBar: React.StatelessComponent<
   })
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>
       <Toolbar>
         <a href="#" style={{ display: 'flex', flexDirection: 'row', textDecoration: 'none' }}>
           <img src={logo} style={{ marginRight: '1em', filter: 'drop-shadow(0px 0px 3px black)' }} />
-          <Typography variant="h5" color="inherit">
+          <Typography variant="h5" color="textPrimary">
             SENSENET
           </Typography>
         </a>
@@ -59,7 +61,7 @@ const DesktopAppBar: React.StatelessComponent<
           {props.loginState === LoginState.Authenticated ? (
             <Tooltip placement="bottom-end" title="Log out">
               <IconButton onClick={() => props.logoutFromRepository()}>
-                <PowerSettingsNew />
+                <PowerSettingsNew style={{ color: theme.palette.text.primary }} />
               </IconButton>
             </Tooltip>
           ) : null}
@@ -69,10 +71,9 @@ const DesktopAppBar: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withInjector(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(DesktopAppBar),
-)
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DesktopAppBar)
+
 export { connectedComponent as DesktopAppBar }

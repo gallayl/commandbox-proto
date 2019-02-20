@@ -1,13 +1,13 @@
-import { Injector } from '@furystack/inject'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { PersonalSettings } from '../../services/PersonalSettings'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
 import Commander from './Commander'
 import { Explore } from './Explore'
 
-export const Content: React.FunctionComponent<{ injector: Injector }> = props => {
+export const Content: React.FunctionComponent = () => {
   const [viewType, setViewType] = useState('')
-  const service = props.injector.GetInstance(PersonalSettings)
+  const injector = useContext(InjectorContext)
+  const service = injector.GetInstance(PersonalSettings)
   useEffect(() => {
     const subscription = service.currentValue.subscribe(v => {
       setViewType(v.content.browseType)
@@ -23,4 +23,4 @@ export const Content: React.FunctionComponent<{ injector: Injector }> = props =>
   return null
 }
 
-export default withInjector(Content)
+export default Content

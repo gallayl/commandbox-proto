@@ -9,9 +9,9 @@ import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { File as SnFile } from '@sensenet/default-content-types'
-import React from 'react'
+import React, { useContext } from 'react'
+import { InjectorContext } from './InjectorContext'
 import { UserAvatar } from './UserAvatar'
-import { withInjector } from './withInjector'
 
 export interface IconOptions {
   style?: React.CSSProperties
@@ -65,9 +65,10 @@ export const IconComponent: React.FunctionComponent<{
   item: GenericContent
   defaultIcon?: JSX.Element
   style?: React.CSSProperties
-  injector: Injector
 }> = props => {
-  const options: IconOptions = { style: props.style, injector: props.injector }
+  const injector = useContext(InjectorContext)
+
+  const options: IconOptions = { style: props.style, injector }
   const resolvers = [...(props.resolvers || []), ...defaultResolvers]
   const defaultIcon = props.defaultIcon || <WebAssetTwoTone style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
@@ -77,7 +78,6 @@ export const IconComponent: React.FunctionComponent<{
 
   return defaultIcon
 }
-
-const wrapped = withInjector(IconComponent)
+const wrapped = IconComponent
 
 export { wrapped as Icon }

@@ -1,6 +1,7 @@
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import React from 'react'
 import MediaQuery from 'react-responsive'
-import theme from '../theme'
+import { ThemeContext } from './ThemeContext'
 export interface ResponsiveContainerProps<TProps> {
   desktop: React.StatelessComponent<TProps>
   tablet: React.StatelessComponent<TProps>
@@ -9,7 +10,11 @@ export interface ResponsiveContainerProps<TProps> {
 }
 
 export class ResponsiveContainer<TProps = {}> extends React.Component<ResponsiveContainerProps<TProps>> {
+  public static contextType = ThemeContext
+
   public render() {
+    const theme: Theme = this.context
+
     return (
       <div>
         <MediaQuery query={theme.breakpoints.up('lg').replace('@media ', '')}>

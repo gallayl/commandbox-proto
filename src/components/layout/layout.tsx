@@ -3,15 +3,15 @@ import * as React from 'react'
 
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import IconButton from '@material-ui/core/IconButton'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Search from '@material-ui/icons/Search'
-import theme from '../../theme'
 import dashboard from '../assets/dashboard.PNG'
 import maros from '../assets/maros.png'
 import logo from '../assets/sensenet-icon-32.png'
 import { CommandBox } from '../CommandBox'
+import { ThemeContext } from '../ThemeContext'
 
 interface LayoutState {
   isActive: boolean
@@ -20,6 +20,8 @@ interface LayoutState {
 
 export class Layout extends React.Component<{}, LayoutState> {
   public state: LayoutState = { isActive: false, search: '' }
+
+  public static contextType = ThemeContext
 
   /**
    *
@@ -56,9 +58,11 @@ export class Layout extends React.Component<{}, LayoutState> {
   }
 
   public render() {
+    const theme: Theme = this.context
+
     return (
-      <MuiThemeProvider theme={theme}>
-        <AppBar position="fixed" style={{ backgroundColor: '#363636' }}>
+      <div>
+        <AppBar position="fixed" style={{ backgroundColor: /*'#363636'*/ theme.palette.background.default }}>
           <Toolbar style={{}}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <img src={logo} style={{ marginRight: '1em' }} />
@@ -115,7 +119,7 @@ export class Layout extends React.Component<{}, LayoutState> {
         <div>
           <img src={dashboard} style={{ marginTop: '64px' }} />
         </div>
-      </MuiThemeProvider>
+      </div>
     )
   }
 }

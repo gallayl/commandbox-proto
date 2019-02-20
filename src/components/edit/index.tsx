@@ -1,19 +1,18 @@
-import { Injector } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
-import React from 'react'
+import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRouteProvider } from '../../services/ContentRouteProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
 import { ContentTypeEditor } from './ContentTypeEditor'
 import { GenericContentEditor } from './GenericContentEditor'
 import { SettingsEditor } from './SettingsEditor'
 
-export const mapStateToProps = (state: rootStateType) => ({
+const mapStateToProps = (state: rootStateType) => ({
   currentContent: state.editContent.currentContent,
   ancestors: state.editContent.ancestors,
   error: state.editContent.error,
@@ -24,15 +23,15 @@ export const mapDispatchToProps = {
 }
 
 const Editor: React.FunctionComponent<
-  ReturnType<typeof mapStateToProps> &
-    typeof mapDispatchToProps &
-    RouteComponentProps<{ contentId?: string }> & { injector: Injector }
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps<{ contentId?: string }>
 > = props => {
   if (props.error) {
     throw props.error
   }
 
-  const repo = props.injector.GetInstance(Repository)
+  const injector = useContext(InjectorContext)
+
+  const repo = injector.GetInstance(Repository)
   const schema = repo.schemas.getSchemaByName(props.currentContent.Type)
 
   const contentId = parseInt(props.match.params.contentId as string, 10)
@@ -48,14 +47,14 @@ const Editor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: props.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+              url: injector.GetInstance(ContentRouteProvider).primaryAction(content),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.currentContent.DisplayName || props.currentContent.Name,
           title: props.currentContent.Path,
-          url: props.injector.GetInstance(ContentRouteProvider).primaryAction(props.currentContent),
+          url: injector.GetInstance(ContentRouteProvider).primaryAction(props.currentContent),
           content: props.currentContent,
         }}
       />
@@ -70,12 +69,10 @@ const Editor: React.FunctionComponent<
   )
 }
 
-const connectedComponent = withInjector(
-  withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(Editor),
-  ),
+const connectedComponent = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Editor),
 )
 export default connectedComponent

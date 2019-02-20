@@ -1,12 +1,13 @@
-import { Injector } from '@furystack/inject'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { PersonalSettings } from '../../services/PersonalSettings'
-import { withInjector } from '../withInjector'
+import { InjectorContext } from '../InjectorContext'
+import { ThemeContext } from '../ThemeContext'
 
-const SettingsEditor: React.FunctionComponent<{ injector: Injector }> = props => {
-  const service = props.injector.GetInstance(PersonalSettings)
-
+const SettingsEditor: React.FunctionComponent = () => {
+  const injector = useContext(InjectorContext)
+  const service = injector.GetInstance(PersonalSettings)
+  const theme = useContext(ThemeContext)
   const [settingsValue, setSettingsValue] = useState('')
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const SettingsEditor: React.FunctionComponent<{ injector: Injector }> = props =>
         }
       }}>
       <MonacoEditor
-        theme="vs-dark"
+        theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
         width="100%"
         language="json"
         value={settingsValue}
@@ -85,6 +86,7 @@ const SettingsEditor: React.FunctionComponent<{ injector: Injector }> = props =>
                   type: 'object',
                   required: ['content', 'drawer'],
                   properties: {
+                    theme: { enum: ['dark', 'light'] },
                     content: { $ref: '#/definitions/content' },
                     drawer: { $ref: '#/definitions/drawer' },
                     commandPalette: { $ref: '#/definitions/commandPalette' },
@@ -99,6 +101,6 @@ const SettingsEditor: React.FunctionComponent<{ injector: Injector }> = props =>
   )
 }
 
-const extendedComponent = withInjector(SettingsEditor)
+const extendedComponent = SettingsEditor
 
 export default extendedComponent

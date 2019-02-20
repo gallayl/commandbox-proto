@@ -1,12 +1,12 @@
-import { Injector } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useState } from 'react'
-import { withInjector } from '../withInjector'
+import React, { useContext, useState } from 'react'
+import { InjectorContext } from '../InjectorContext'
 
-const GenericContentEditor: React.FunctionComponent<{ injector: Injector; content: GenericContent }> = props => {
-  const repo = props.injector.GetInstance(Repository)
+const GenericContentEditor: React.FunctionComponent<{ content: GenericContent }> = props => {
+  const injector = useContext(InjectorContext)
+  const repo = injector.GetInstance(Repository)
   const schema = repo.schemas.getSchemaByName(props.content.Type)
 
   const [savedContent, setSavedContent] = useState({ ...props.content })
@@ -39,6 +39,6 @@ const GenericContentEditor: React.FunctionComponent<{ injector: Injector; conten
   )
 }
 
-const wrappedComponent = withInjector(GenericContentEditor)
+const wrappedComponent = GenericContentEditor
 
 export { wrappedComponent as GenericContentEditor }
