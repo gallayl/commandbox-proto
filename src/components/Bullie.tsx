@@ -1,9 +1,11 @@
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
+import zst from '../assets/sn-zseni__listekn__s.png'
 
 export const Bullie: React.StatelessComponent = () => (
   <div>
     <Typography paragraph={true}>
+      <img src={zst} style={{ float: 'left', padding: '2em' }} />
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
       imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum

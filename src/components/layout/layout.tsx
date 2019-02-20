@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Search from '@material-ui/icons/Search'
 import dashboard from '../assets/dashboard.PNG'
 import maros from '../assets/maros.png'
-import logo from '../assets/sensenet-icon-32.png'
+import logo from '../assets/sn-zseni__listekn__s.png'
 import { CommandBox } from '../CommandBox'
 import { ThemeContext } from '../ThemeContext'
 
