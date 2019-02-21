@@ -14,17 +14,16 @@ export class ResponsiveContainer<TProps = {}> extends React.Component<Responsive
 
   public render() {
     const theme: Theme = this.context
-
     return (
       <div>
         <MediaQuery query={theme.breakpoints.up('lg').replace('@media ', '')}>
-          {this.props.desktop({ children: this.props.children, ...this.props.innerProps })}
+          {React.createElement(this.props.desktop, this.props.innerProps, this.props.children)}
         </MediaQuery>
         <MediaQuery query={theme.breakpoints.only('md').replace('@media ', '')}>
-          {this.props.tablet({ children: this.props.children, ...this.props.innerProps })}
+          {React.createElement(this.props.tablet, this.props.innerProps, this.props.children)}
         </MediaQuery>
         <MediaQuery query={theme.breakpoints.down('sm').replace('@media ', '')}>
-          {this.props.mobile({ children: this.props.children, ...this.props.innerProps })}
+          {React.createElement(this.props.mobile, this.props.innerProps, this.props.children)}
         </MediaQuery>
       </div>
     )
