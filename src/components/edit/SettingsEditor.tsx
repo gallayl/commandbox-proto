@@ -1,10 +1,10 @@
 import { Repository, Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Settings } from '@sensenet/default-content-types'
+import { languages, Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { InjectorContext } from '../InjectorContext'
-import { Uri, languages } from 'monaco-editor'
 
 const PortalSettingsPath = `sensenet://settings/PortalSettings`
 const uri = Uri.parse(PortalSettingsPath)
@@ -112,7 +112,6 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
         value={settingsValue}
         onChange={v => setSettingsValue(v)}
         editorDidMount={(editor, monaco) => {
-          const uri = monaco.Uri.parse(`sensenet://settings/${props.content.Type}`)
           if (!monaco.editor.getModel(uri)) {
             const m = monaco.editor.createModel(settingsValue, 'json', uri)
             editor.setModel(m)
