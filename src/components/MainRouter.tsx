@@ -19,7 +19,7 @@ const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './Login'))
-const EditComponent = lazy(async () => await import(/* webpackChunkName: "Edit" */ './Edit'))
+const EditComponent = lazy(async () => await import(/* webpackChunkName: "edit" */ './edit'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const PersonalSettingsEditor = lazy(

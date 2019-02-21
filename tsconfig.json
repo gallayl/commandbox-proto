@@ -5,7 +5,8 @@
     "outDir": "dist",
     "composite": true,
     "jsx": "react",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }

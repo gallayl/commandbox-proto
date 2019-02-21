@@ -65,7 +65,7 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
   ],
 })
 
-const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => {
+export const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => {
   const injector = useContext(InjectorContext)
   const [settingsValue, setSettingsValue] = useState('')
   const repo = injector.GetInstance(Repository)
@@ -123,7 +123,3 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
     </div>
   )
 }
-
-const extendedComponent = SettingsEditor
-
-export { extendedComponent as SettingsEditor }
