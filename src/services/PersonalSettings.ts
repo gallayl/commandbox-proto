@@ -21,7 +21,7 @@ export const defaultSettings: PersonalSettingType = {
   },
   drawer: {
     enabled: true,
-    items: ['Setup'],
+    items: ['Content'],
   },
   commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
 }
