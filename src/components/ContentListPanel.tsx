@@ -1,5 +1,6 @@
 import TableCell from '@material-ui/core/TableCell'
 import { Repository } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { useContext, useState } from 'react'
@@ -42,6 +43,18 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
     if (!props.collection.parent.Id) {
       loadParent(props.parentId)
     }
+
+    let searchString = ''
+    const runSearch = debounce(() => {
+      console.log('Search for:', searchString)
+      const child = children.find(
+        c =>
+          c.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
+          (c.DisplayName && c.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
+      )
+      child && setActiveContent(child)
+      searchString = ''
+    }, 500)
 
     const handleActivateItem = (item: GenericContent) => {
       if (item.IsFolder) {
@@ -146,7 +159,10 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
                 props.onTabRequest()
                 break
               default:
-                console.log(ev.key)
+                if (ev.key.length === 1) {
+                  searchString = searchString + ev.key
+                  runSearch()
+                }
             }
           }}>
           <ContentList<GenericContent>
