@@ -134,6 +134,7 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
         parent: action.parent,
         children: action.children,
         ancestors: action.ancestors,
+        activeContent: action.children[0],
       }
     }
     if (isFromAction(action, select)) {

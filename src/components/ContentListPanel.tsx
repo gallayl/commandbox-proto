@@ -2,7 +2,7 @@ import TableCell from '@material-ui/core/TableCell'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { ContentRouteProvider } from '../services/ContentRouteProvider'
 import { rootStateType } from '../store'
@@ -36,6 +36,7 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
     const { ancestors, children, parent, activeContent, selected } = props.collection
     const { setActiveContent, select, loadParent } = props
     const injector = useContext(InjectorContext)
+    const [isFocused, setIsFocused] = useState(false)
     const repo = injector.GetInstance(Repository)
 
     if (!props.collection.parent.Id) {
@@ -76,8 +77,18 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
           />
         ) : null}
         <div
-          style={{ height: 'calc(100% - 36px)', overflow: 'auto' }}
+          style={{
+            ...(isFocused ? {} : { opacity: 0.8 }),
+            height: 'calc(100% - 36px)',
+            overflow: 'auto',
+            userSelect: 'none',
+            outline: 'none',
+          }}
           tabIndex={0}
+          onFocus={() => {
+            setIsFocused(true)
+          }}
+          onBlur={() => setIsFocused(false)}
           ref={props.containerRef}
           onKeyDown={ev => {
             if (!activeContent) {
