@@ -56,6 +56,7 @@ setupRepositoryServices({
       'ParentId',
       'Version',
       'PageCount' as any,
+      'Binary',
     ],
   },
 })

@@ -4,11 +4,69 @@ import { Settings } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { InjectorContext } from '../InjectorContext'
+import { Uri, languages } from 'monaco-editor'
+
+const PortalSettingsPath = `sensenet://settings/PortalSettings`
+const uri = Uri.parse(PortalSettingsPath)
+languages.json.jsonDefaults.setDiagnosticsOptions({
+  validate: true,
+  enableSchemaRequest: false,
+  schemas: [
+    {
+      uri: 'sn-admin-portal-settings',
+      fileMatch: [uri.toString()],
+      schema: {
+        definitions: {
+          drawer: {
+            type: 'object',
+            description: 'Options for the left drawer',
+            properties: {
+              enabled: { type: 'boolean', description: 'Enable or disable the drawer' },
+              items: {
+                description: 'An array of enabled items',
+                type: 'array',
+                uniqueItems: true,
+                items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup'] },
+              },
+            },
+          },
+          commandPalette: {
+            type: 'object',
+            description: 'Options for the command palette',
+            properties: {
+              enabled: { type: 'boolean', description: 'Enable or disable the command palette' },
+              wrapQuery: {
+                type: 'string',
+                description: 'A wrapper for all queries executed from the command palette',
+              },
+            },
+          },
+          content: {
+            type: 'object',
+            description: 'Content browsing and basic editing functions',
+            properties: {
+              browseType: {
+                description: 'Choose between a two-panel (commander) or a tree + single panel (explorer) style view',
+                enum: ['commander', 'explorer'],
+              },
+            },
+          },
+        },
+        type: 'object',
+        required: ['content', 'drawer'],
+        properties: {
+          theme: { enum: ['dark', 'light'] },
+          content: { $ref: '#/definitions/content' },
+          drawer: { $ref: '#/definitions/drawer' },
+          commandPalette: { $ref: '#/definitions/commandPalette' },
+        },
+      },
+    },
+  ],
+})
 
 const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => {
   const injector = useContext(InjectorContext)
-  const [currentContentId, setCurrentContentId] = useState(props.content.Id)
-  const [loadTimestamp, setLoadTimestamp] = useState(new Date())
   const [settingsValue, setSettingsValue] = useState('')
   const repo = injector.GetInstance(Repository)
   useEffect(() => {
@@ -23,7 +81,7 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
         setSettingsValue(text)
       }
     })()
-  }, [currentContentId, loadTimestamp])
+  }, [props.content.Id])
 
   return (
     <div
@@ -33,7 +91,7 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
           try {
             ev.preventDefault()
             const verified = JSON.stringify(JSON.parse(settingsValue), undefined, 4)
-            const result = await Upload.textAsFile({
+            await Upload.textAsFile({
               text: verified,
               parentPath: PathHelper.getParentPath(props.content.Path),
               fileName: props.content.Name,
@@ -42,8 +100,6 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
               contentTypeName: props.content.Type,
               binaryPropertyName: 'Binary',
             })
-            setCurrentContentId(result.Id)
-            setLoadTimestamp(new Date())
           } catch (error) {
             /** */
           }
@@ -55,6 +111,15 @@ const SettingsEditor: React.FunctionComponent<{ content: Settings }> = props => 
         language="json"
         value={settingsValue}
         onChange={v => setSettingsValue(v)}
+        editorDidMount={(editor, monaco) => {
+          const uri = monaco.Uri.parse(`sensenet://settings/${props.content.Type}`)
+          if (!monaco.editor.getModel(uri)) {
+            const m = monaco.editor.createModel(settingsValue, 'json', uri)
+            editor.setModel(m)
+          } else {
+            editor.setModel(monaco.editor.getModel(uri))
+          }
+        }}
       />
     </div>
   )

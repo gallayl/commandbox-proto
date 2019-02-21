@@ -9,7 +9,9 @@ import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { InjectorContext } from '../InjectorContext'
 import { ContentTypeEditor } from './ContentTypeEditor'
+import { CssEditor } from './CssEditor'
 import { GenericContentEditor } from './GenericContentEditor'
+import { JavaScriptEditor } from './JavaScriptEditor'
 import { SettingsEditor } from './SettingsEditor'
 
 const mapStateToProps = (state: rootStateType) => ({
@@ -62,6 +64,14 @@ const Editor: React.FunctionComponent<
         <ContentTypeEditor content={props.currentContent} />
       ) : props.currentContent.Type === 'Settings' || schema.ParentTypeName === 'Settings' ? (
         <SettingsEditor content={props.currentContent as Settings} />
+      ) : (props.currentContent as any).IsFile ? (
+        (props.currentContent as any).Binary &&
+        (props.currentContent as any).Binary.__mediaresource.content_type === 'application/x-javascript' ? (
+          <JavaScriptEditor content={props.currentContent} />
+        ) : (props.currentContent as any).Binary &&
+          (props.currentContent as any).Binary.__mediaresource.content_type === 'text/css' ? (
+          <CssEditor content={props.currentContent} />
+        ) : null
       ) : (
         <GenericContentEditor content={props.currentContent} />
       )}

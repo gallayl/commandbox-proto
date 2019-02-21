@@ -9,11 +9,23 @@ export class CheatCommandProvider implements CommandProvider {
       primaryText: 'GOD MODE ON',
       secondaryText: '',
       url: 'https://classicreload.com/dosx-doom.html',
+      content: {
+        Id: 0,
+        Path: '',
+        Name: '',
+        Type: 'DoomCheatContent',
+      },
     },
     'pot of gold': {
       primaryText: 'cheat enabled you wascally wabbit',
       secondaryText: 'now take a screenshot and go talk to your line manager',
       url: 'https://www.myabandonware.com/game/warcraft-orcs-humans-250/play-250',
+      content: {
+        Id: 0,
+        Path: '',
+        Name: '',
+        Type: 'WarCheatContent',
+      },
     },
   }
 
