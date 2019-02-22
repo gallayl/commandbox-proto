@@ -1,18 +1,13 @@
-import { Repository } from '@sensenet/client-core'
-import { Settings } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { ContentRouteProvider } from '../../services/ContentRouteProvider'
+import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
+import { FullScreenLoader } from '../FullScreenLoader'
 import { InjectorContext } from '../InjectorContext'
-import { ContentTypeEditor } from './ContentTypeEditor'
-import { CssEditor } from './CssEditor'
-import { GenericContentEditor } from './GenericContentEditor'
-import { JavaScriptEditor } from './JavaScriptEditor'
-import { SettingsEditor } from './SettingsEditor'
+import { TextEditor } from './TextEditor'
 
 const mapStateToProps = (state: rootStateType) => ({
   currentContent: state.editContent.currentContent,
@@ -30,12 +25,7 @@ const Editor: React.FunctionComponent<
   if (props.error) {
     throw props.error
   }
-
   const injector = useContext(InjectorContext)
-
-  const repo = injector.GetInstance(Repository)
-  const schema = repo.schemas.getSchemaByName(props.currentContent.Type)
-
   const contentId = parseInt(props.match.params.contentId as string, 10)
   props.loadContent(contentId)
   return (
@@ -49,18 +39,19 @@ const Editor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentRouteProvider).primaryAction(content),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.currentContent.DisplayName || props.currentContent.Name,
           title: props.currentContent.Path,
-          url: injector.GetInstance(ContentRouteProvider).primaryAction(props.currentContent),
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.currentContent),
           content: props.currentContent,
         }}
       />
-      {props.currentContent.Id === 0 ? null : props.currentContent.Type === 'ContentType' ? (
+      {props.currentContent.Id ? <TextEditor content={props.currentContent} /> : <FullScreenLoader />}
+      {/* {props.currentContent.Id === 0 ? null : props.currentContent.Type === 'ContentType' ? (
         <ContentTypeEditor content={props.currentContent} />
       ) : props.currentContent.Type === 'Settings' || schema.ParentTypeName === 'Settings' ? (
         <SettingsEditor content={props.currentContent as Settings} />
@@ -74,7 +65,7 @@ const Editor: React.FunctionComponent<
         ) : null
       ) : (
         <GenericContentEditor content={props.currentContent} />
-      )}
+      )} */}
     </div>
   )
 }

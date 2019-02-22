@@ -5,7 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
-import { ContentRouteProvider } from '../services/ContentRouteProvider'
+import { ContentContextProvider } from '../services/ContentContextProvider'
 import { rootStateType } from '../store'
 import { createCollectionState } from '../store/CollectionState'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
@@ -74,14 +74,14 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
                 ({
                   displayName: content.DisplayName || content.Name,
                   title: content.Path,
-                  url: injector.GetInstance(ContentRouteProvider).primaryAction(content),
+                  url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
                   content,
                 } as BreadcrumbItem),
             )}
             currentContent={{
               displayName: parent.DisplayName || parent.Name,
               title: parent.Path,
-              url: injector.GetInstance(ContentRouteProvider).primaryAction(parent),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(parent),
               content: parent,
             }}
             onItemClick={(_ev, item) => {

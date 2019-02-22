@@ -3,9 +3,9 @@ import { ConstantContent, Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import { CommandPaletteItem } from '../store/CommandPalette'
-import { CommandProvider } from './CommandProviderManager'
-import { ContentRouteProvider } from './ContentRouteProvider'
+import { CommandPaletteItem } from '../../store/CommandPalette'
+import { CommandProvider } from '../CommandProviderManager'
+import { ContentContextProvider } from '../ContentContextProvider'
 
 @Injectable()
 export class InFolderSearchCommandProvider implements CommandProvider {
@@ -38,7 +38,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
       content,
-      url: this.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+      url: this.injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
     }))
   }
 }

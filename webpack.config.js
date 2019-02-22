@@ -39,7 +39,7 @@ module.exports = {
       template: './index.html',
     }),
     new MonacoWebpackPlugin({
-      languages: ['json', 'csharp', 'javascript', 'markdown', 'razor', 'typescript', 'xml'],
+      languages: ['json', 'javascript', 'xml', 'html'],
       output: 'static/monaco',
     }),
   ],

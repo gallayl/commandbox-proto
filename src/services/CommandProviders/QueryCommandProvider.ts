@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { ConstantContent, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CommandPaletteItem } from '../store/CommandPalette'
-import { CommandProvider } from './CommandProviderManager'
-import { ContentRouteProvider } from './ContentRouteProvider'
-import { PersonalSettings } from './PersonalSettings'
+import { CommandPaletteItem } from '../../store/CommandPalette'
+import { CommandProvider } from '../CommandProviderManager'
+import { ContentContextProvider } from '../ContentContextProvider'
+import { PersonalSettings } from '../PersonalSettings'
 
 @Injectable()
 export class QueryCommandProvider implements CommandProvider {
@@ -33,7 +33,7 @@ export class QueryCommandProvider implements CommandProvider {
         ({
           primaryText: content.DisplayName || content.Name,
           secondaryText: content.Path,
-          url: this.injector.GetInstance(ContentRouteProvider).primaryAction(content),
+          url: this.injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
           content,
           icon: content.Icon,
         } as CommandPaletteItem),

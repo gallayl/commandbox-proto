@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
-import { CommandPaletteItem } from '../store/CommandPalette'
-import { CommandProvider } from './CommandProviderManager'
+import { CommandPaletteItem } from '../../store/CommandPalette'
+import { CommandProvider } from '../CommandProviderManager'
 
 @Injectable()
 export class HistoryCommandProvider implements CommandProvider {
