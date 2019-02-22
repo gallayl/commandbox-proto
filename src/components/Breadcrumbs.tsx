@@ -26,7 +26,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
       <span key={key}>
         <Tooltip title={item.title}>
           <Button onClick={ev => props.onItemClick(ev, item)}>
-            <Icon item={item.content} style={{ marginRight: '0.3em', height: '0.7em' }} />
+            <Icon item={item.content} style={{ marginRight: '0.3em' }} />
             {item.displayName}
           </Button>
         </Tooltip>
@@ -35,7 +35,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
     ))}
     <Tooltip title={props.currentContent.content.Path || '/'}>
       <Button onClick={ev => props.onItemClick(ev, props.currentContent)}>
-        <Icon item={props.currentContent.content} style={{ marginRight: '0.3em', height: '0.7em' }} />
+        <Icon item={props.currentContent.content} style={{ marginRight: '0.3em' }} />
         {props.currentContent.displayName}
       </Button>
     </Tooltip>
