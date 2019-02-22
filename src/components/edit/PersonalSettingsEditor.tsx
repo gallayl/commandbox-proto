@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import MonacoEditor from 'react-monaco-editor'
-import { personalSettingsModel } from '../../services/MonacoModels'
+import '../../services/MonacoModels/PersonalSettingsModel'
 import { PersonalSettings } from '../../services/PersonalSettings'
 import { InjectorContext } from '../InjectorContext'
-import { ThemeContext } from '../ThemeContext'
+import { TextEditor } from './TextEditor'
 
 const SettingsEditor: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
   const service = injector.GetInstance(PersonalSettings)
-  const theme = useContext(ThemeContext)
-  const [settingsValue, setSettingsValue] = useState('')
+  const [settingsValue, setSettingsValue] = useState(JSON.stringify(service.currentValue.getValue(), undefined, 4))
 
   useEffect(() => {
     const subscription = service.currentValue.subscribe(v => {
@@ -19,30 +17,17 @@ const SettingsEditor: React.FunctionComponent = () => {
   }, [])
 
   return (
-    <div
-      style={{ width: '100%', height: '100%' }}
-      onKeyDown={async ev => {
-        if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
-          try {
-            ev.preventDefault()
-            const verified = JSON.parse(settingsValue)
-            service.setValue(verified)
-          } catch (error) {
-            /** */
-          }
+    <TextEditor
+      content={{ Type: 'Settings', Name: 'PersonalSettings' } as any}
+      loadContent={async () => settingsValue}
+      saveContent={async (_c, v) => {
+        try {
+          service.setValue(JSON.parse(v))
+        } catch (error) {
+          /** */
         }
-      }}>
-      <MonacoEditor
-        theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
-        width="100%"
-        language="json"
-        value={settingsValue}
-        onChange={v => setSettingsValue(v)}
-        editorDidMount={e => {
-          e.setModel(personalSettingsModel)
-        }}
-      />
-    </div>
+      }}
+    />
   )
 }
 

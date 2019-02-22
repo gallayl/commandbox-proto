@@ -19,7 +19,8 @@ const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './Login'))
-const EditComponent = lazy(async () => await import(/* webpackChunkName: "edit" */ './edit'))
+const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
+const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const PersonalSettingsEditor = lazy(
@@ -43,7 +44,12 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
             <AuthorizedRoute path="/search" render={() => <SearchComponent />} authorize={() => true} />
             <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
             <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
-            <AuthorizedRoute path="/edit/:contentId?" render={() => <EditComponent />} authorize={() => true} />
+            <AuthorizedRoute path="/editBinary/:contentId?" render={() => <EditBinary />} authorize={() => true} />
+            <AuthorizedRoute
+              path="/editProperties/:contentId?"
+              render={() => <EditProperties />}
+              authorize={() => true}
+            />
             <AuthorizedRoute
               path="/preview/:documentId?"
               render={() => <DocumentViewerComponent />}

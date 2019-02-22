@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
-import { ContentType, File as SnFile, GenericContent, Settings, SystemFile } from '@sensenet/default-content-types'
+import { ContentType, File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
@@ -21,10 +21,13 @@ export class ContentContextProvider {
   }
 
   public getMonacoLanguage(content: GenericContent) {
-    if (
-      isContentFromType(content, SnFile, this.repository.schemas) ||
-      isContentFromType(content, SystemFile, this.repository.schemas)
-    ) {
+    if (isContentFromType(content, Settings, this.repository.schemas)) {
+      return 'json'
+    }
+    if (isContentFromType(content, ContentType, this.repository.schemas)) {
+      return 'xml'
+    }
+    if (isContentFromType(content, SnFile, this.repository.schemas)) {
       if (content.Binary) {
         switch (content.Binary.__mediaresource.content_type) {
           case 'application/x-javascript':
@@ -38,13 +41,11 @@ export class ContentContextProvider {
         }
       }
     }
-    if (isContentFromType(content, Settings, this.repository.schemas)) {
-      return 'json'
-    }
-    if (isContentFromType(content, ContentType, this.repository.schemas)) {
-      return 'xml'
-    }
-    throw Error(`Monaco language for content ${content.Path} is not supported`)
+    return ''
+  }
+
+  public canEditBinary(content: GenericContent) {
+    return this.getMonacoLanguage(content) ? true : false
   }
 
   public getPrimaryActionUrl<T extends GenericContent>(content: T) {
@@ -58,6 +59,9 @@ export class ContentContextProvider {
     ) {
       return `/preview/${content.Id}`
     }
-    return `/edit/${content.Id}`
+    if (this.canEditBinary(content)) {
+      return `/editBinary/${content.Id}`
+    }
+    return `/editProperties/${content.Id}`
   }
 }

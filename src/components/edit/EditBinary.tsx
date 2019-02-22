@@ -51,21 +51,6 @@ const Editor: React.FunctionComponent<
         }}
       />
       {props.currentContent.Id ? <TextEditor content={props.currentContent} /> : <FullScreenLoader />}
-      {/* {props.currentContent.Id === 0 ? null : props.currentContent.Type === 'ContentType' ? (
-        <ContentTypeEditor content={props.currentContent} />
-      ) : props.currentContent.Type === 'Settings' || schema.ParentTypeName === 'Settings' ? (
-        <SettingsEditor content={props.currentContent as Settings} />
-      ) : (props.currentContent as any).IsFile ? (
-        (props.currentContent as any).Binary &&
-        (props.currentContent as any).Binary.__mediaresource.content_type === 'application/x-javascript' ? (
-          <JavaScriptEditor content={props.currentContent} />
-        ) : (props.currentContent as any).Binary &&
-          (props.currentContent as any).Binary.__mediaresource.content_type === 'text/css' ? (
-          <CssEditor content={props.currentContent} />
-        ) : null
-      ) : (
-        <GenericContentEditor content={props.currentContent} />
-      )} */}
     </div>
   )
 }

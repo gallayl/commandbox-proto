@@ -1,6 +1,6 @@
 import { editor, languages, Uri } from 'monaco-editor'
 
-const personalSettingsPath = 'sensenet://PersonalSettings.setting'
+const personalSettingsPath = 'sensenet://settings/PersonalSettings'
 
 const uriString = Uri.parse(personalSettingsPath).toString()
 languages.json.jsonDefaults.setDiagnosticsOptions({

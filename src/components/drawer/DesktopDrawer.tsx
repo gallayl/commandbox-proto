@@ -37,7 +37,7 @@ const DesktopDrawer: React.StatelessComponent<
       setDrawerConfig(v.drawer)
     }, true)
     return () => subscription.dispose()
-  })
+  }, [])
 
   if (!drawerConfig.enabled) {
     return null
