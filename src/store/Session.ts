@@ -26,6 +26,8 @@ export const logoutFromRepository = createAction(() => ({
     const repo = options.getInjectable(Repository)
     try {
       await repo.authentication.logout()
+      options.dispatch(setCurrentUser(ConstantContent.VISITOR_USER))
+      options.dispatch(setLoginState(LoginState.Unauthenticated))
     } catch (error) {
       if (isExtendedError(error)) {
         if (!error.response.ok) {

@@ -11,7 +11,7 @@ export const SelectionControl: React.FunctionComponent<{ isSelected: boolean; co
     {isSelected ? (
       <Checkbox checked={true} style={{ margin: 0, padding: 0 }} />
     ) : (
-      <Icon item={content} style={{ verticalAlign: 'middle', maxHeight: '24px' }} />
+      <Icon item={content} style={{ verticalAlign: 'middle' }} />
     )}
   </div>
 )

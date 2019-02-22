@@ -121,7 +121,7 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
     ancestors: [],
     selected: [],
     parentLoadOptions: {},
-    childrenLoadOptions: {},
+    childrenLoadOptions: { orderby: [['IsFolder', 'desc']], select: 'all' },
     ancestorsLoadOptions: { orderby: [['Path', 'asc']] },
     activeContent: {} as any,
   }
