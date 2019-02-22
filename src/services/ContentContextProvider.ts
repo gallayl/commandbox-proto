@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
-import { ContentType, File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
+import { ContentType, File as SnFile, GenericContent, Settings, Resource } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
@@ -24,7 +24,10 @@ export class ContentContextProvider {
     if (isContentFromType(content, Settings, this.repository.schemas)) {
       return 'json'
     }
-    if (isContentFromType(content, ContentType, this.repository.schemas)) {
+    if (
+      isContentFromType(content, ContentType, this.repository.schemas) ||
+      isContentFromType(content, Resource, this.repository.schemas)
+    ) {
       return 'xml'
     }
     if (isContentFromType(content, SnFile, this.repository.schemas)) {
@@ -50,7 +53,7 @@ export class ContentContextProvider {
 
   public getPrimaryActionUrl<T extends GenericContent>(content: T) {
     if (content.IsFolder) {
-      return `/commander/${content.Id}`
+      return `/content/${content.Id}`
     }
     if (
       (content.Type === 'File' || content.Type === 'Image') &&

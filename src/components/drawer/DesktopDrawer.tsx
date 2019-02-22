@@ -34,6 +34,9 @@ const DesktopDrawer: React.StatelessComponent<
   const service = injector.GetInstance(PersonalSettings)
   useEffect(() => {
     const subscription = service.currentValue.subscribe(v => {
+      if (v.drawer.items.length === 0) {
+        throw Error('ANYAD')
+      }
       setDrawerConfig(v.drawer)
     }, true)
     return () => subscription.dispose()

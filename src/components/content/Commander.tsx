@@ -1,6 +1,6 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { RouteComponentProps, withRouter, matchPath } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left, right } from '../../store/Commander'
 import { createCommandListPanel } from '../ContentListPanel'
@@ -9,31 +9,49 @@ import { InjectorContext } from '../InjectorContext'
 const LeftControl = createCommandListPanel(left)
 const RightControl = createCommandListPanel(right)
 
-export const Commander: React.StatelessComponent<
-  RouteComponentProps<{ leftParent?: string; rightParent?: string }>
-> = props => {
-  const injector = useContext(InjectorContext)
-  const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
-  const getRightFromPath = () =>
-    parseInt(props.match.params.rightParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
+export interface CommanderRouteParams {
+  folderId?: string
+  rightParent?: string
+}
 
-  const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
-  const [rightParentId, setRightParentId] = useState(getRightFromPath())
+export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRouteParams>> = props => {
+  const injector = useContext(InjectorContext)
+  const getLeftFromPath = (params: CommanderRouteParams) =>
+    parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
+  const getRightFromPath = (params: CommanderRouteParams) =>
+    parseInt(params.rightParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
+
+  const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
+  const [rightParentId, setRightParentId] = useState(getRightFromPath(props.match.params))
 
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
   useEffect(() => {
-    if (getLeftFromPath() !== leftParentId) {
-      setLeftParentId(getLeftFromPath())
+    const historyChangeListener = props.history.listen((location, action) => {
+      const match = matchPath(location.pathname, props.match.path)
+      console.log(action)
+      if (match) {
+        if (getLeftFromPath(match.params) !== leftParentId) {
+          setLeftParentId(getLeftFromPath(match.params))
+        }
+        if (getRightFromPath(match.params) !== rightParentId) {
+          setRightParentId(getRightFromPath(match.params))
+        }
+      }
+    })
+    return () => {
+      historyChangeListener()
     }
-    if (getRightFromPath() !== rightParentId) {
-      setRightParentId(getRightFromPath())
-    }
-  }, [props.location.pathname])
+  }, [leftParentId, rightParentId])
 
   useEffect(() => {
-    props.history.push(`/content/${leftParentId}/${rightParentId}`)
+    if (
+      props.match.params.folderId !== leftParentId.toString() ||
+      props.match.params.rightParent !== rightParentId.toString()
+    ) {
+      props.history.push(`/content/${leftParentId}/${rightParentId}`)
+    }
   }, [leftParentId, rightParentId])
 
   return (

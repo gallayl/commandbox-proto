@@ -13,6 +13,7 @@ import { QueryCommandProvider } from '../services/CommandProviders/QueryCommandP
 import { getViewerSettings } from '../services/GetViewerSettings'
 import { subscribeEventsToStore } from './RepositoryEventActions'
 import { setCurrentUser, setGroups, setLoginState } from './Session'
+import Semaphore from 'semaphore-async-await'
 
 export const setupRepositoryServices = async (options: {
   injector: Injector
@@ -39,17 +40,26 @@ export const setupRepositoryServices = async (options: {
     InFolderSearchCommandProvider,
     CheatCommandProvider,
   )
+
+  const loadUserLock = new Semaphore(1)
+
   repo.authentication.currentUser.subscribe(async u => {
-    store.dispatch(setGroups([]))
-    store.dispatch(setCurrentUser(u))
-    const groups = await repo.security.getParentGroups({
-      contentIdOrPath: u.Id,
-      directOnly: false,
-      oDataOptions: {
-        select: ['Name'],
-      },
-    })
-    store.dispatch(setGroups(groups.d.results))
+    try {
+      await loadUserLock.acquire()
+      store.dispatch(setCurrentUser(u))
+      const groups = await repo.security.getParentGroups({
+        contentIdOrPath: u.Id,
+        directOnly: false,
+        oDataOptions: {
+          select: ['Name'],
+        },
+      })
+      store.dispatch(setGroups(groups.d.results))
+    } catch (error) {
+      store.dispatch(setGroups([]))
+    } finally {
+      loadUserLock.release()
+    }
   }, true)
   repo.authentication.state.subscribe(state => store.dispatch(setLoginState(state)), true)
   subscribeEventsToStore(store, eventHub)

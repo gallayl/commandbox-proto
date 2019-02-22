@@ -3,7 +3,7 @@ import { Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ContentContextProvider } from '../services/ContentContextProvider'
 import { rootStateType } from '../store'
@@ -40,9 +40,9 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
     const [isFocused, setIsFocused] = useState(false)
     const repo = injector.GetInstance(Repository)
 
-    if (!props.collection.parent.Id) {
+    useEffect(() => {
       loadParent(props.parentId)
-    }
+    }, [props.parentId])
 
     let searchString = ''
     const runSearch = debounce(() => {
