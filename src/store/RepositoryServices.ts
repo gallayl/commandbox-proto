@@ -3,6 +3,7 @@ import { FormsAuthenticationService, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { EventHub } from '@sensenet/repository-events'
 import { Store } from 'redux'
+import Semaphore from 'semaphore-async-await'
 import { store } from '.'
 import { CommandProviderManager } from '../services/CommandProviderManager'
 import { CheatCommandProvider } from '../services/CommandProviders/CheatCommandProvider'
@@ -13,7 +14,6 @@ import { QueryCommandProvider } from '../services/CommandProviders/QueryCommandP
 import { getViewerSettings } from '../services/GetViewerSettings'
 import { subscribeEventsToStore } from './RepositoryEventActions'
 import { setCurrentUser, setGroups, setLoginState } from './Session'
-import Semaphore from 'semaphore-async-await'
 
 export const setupRepositoryServices = async (options: {
   injector: Injector

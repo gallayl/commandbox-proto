@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
-import { ContentType, File as SnFile, GenericContent, Settings, Resource } from '@sensenet/default-content-types'
+import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 

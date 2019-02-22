@@ -1,6 +1,6 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter, matchPath } from 'react-router'
+import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left, right } from '../../store/Commander'
 import { createCommandListPanel } from '../ContentListPanel'
