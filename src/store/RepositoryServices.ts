@@ -21,7 +21,6 @@ export const setupRepositoryServices = async (options: {
   store: Store
 }) => {
   const repo = new Repository(options.repositoryConfig)
-  repo.reloadSchema()
   FormsAuthenticationService.Setup(repo, {
     select: 'all',
   })
@@ -55,6 +54,7 @@ export const setupRepositoryServices = async (options: {
         },
       })
       store.dispatch(setGroups(groups.d.results))
+      await repo.reloadSchema()
     } catch (error) {
       store.dispatch(setGroups([]))
     } finally {
