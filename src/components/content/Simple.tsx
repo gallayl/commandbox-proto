@@ -5,23 +5,17 @@ import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left } from '../../store/Commander'
 import { createCommandListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
-import { Tree } from '../tree/index'
 
-const ExploreControl = createCommandListPanel(left)
+const SimpleListControl = createCommandListPanel(left)
 
-export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
-  const getLeftFromPath = () => parseInt(props.match.params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
+export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ leftParent?: string }>> = props => {
+  const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const injector = useContext(InjectorContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <Tree
-        parentPath={ConstantContent.PORTAL_ROOT.Path}
-        onItemClick={item => setLeftParentId(item.Id)}
-        activeItemId={leftParentId}
-      />
-      <ExploreControl
+      <SimpleListControl
         onActivateItem={item => {
           props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
         }}
@@ -38,5 +32,5 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
   )
 }
 
-const connected = withRouter(ExploreComponent)
-export { connected as Explore }
+const connected = withRouter(SimpleListComponent)
+export { connected as SimpleList }

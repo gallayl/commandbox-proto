@@ -41,8 +41,9 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
             description: 'Content browsing and basic editing functions',
             properties: {
               browseType: {
-                description: 'Choose between a two-panel (commander) or a tree + single panel (explorer) style view',
-                enum: ['commander', 'explorer'],
+                description:
+                  'Choose between a simple list, a two-panel (commander) or a tree + single panel (explorer) style view',
+                enum: ['simple', 'commander', 'explorer'],
               },
             },
           },
