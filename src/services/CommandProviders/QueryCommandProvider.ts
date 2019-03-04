@@ -19,7 +19,9 @@ export class QueryCommandProvider implements CommandProvider {
   }
 
   public async getItems(query: string): Promise<CommandPaletteItem[]> {
-    const extendedQuery = this.personalSettings.currentValue.getValue().commandPalette.wrapQuery.replace('{0}', query)
+    const extendedQuery = this.personalSettings.currentValue
+      .getValue()
+      .default.commandPalette.wrapQuery.replace('{0}', query)
     const result = await this.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {

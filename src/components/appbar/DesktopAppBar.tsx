@@ -12,7 +12,7 @@ import logo from '../../assets/sensenet-icon-32.png'
 import { rootStateType } from '../../store'
 import { logoutFromRepository } from '../../store/Session'
 import { CommandPalette } from '../command-palette/CommandPalette'
-import { PersonalSettingsContext } from '../PersonalSettingsContext'
+import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
 import { ThemeContext } from '../ThemeContext'
 import { UserAvatar } from '../UserAvatar'
 
@@ -30,7 +30,7 @@ const DesktopAppBar: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > = props => {
   const theme = useContext(ThemeContext)
-  const personalSettings = useContext(PersonalSettingsContext)
+  const personalSettings = useContext(ResponsivePersonalSetttings)
 
   return (
     <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>

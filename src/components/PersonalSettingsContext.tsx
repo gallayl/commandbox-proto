@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import React from 'react'
-import { defaultSettings, PersonalSettings, PersonalSettingType } from '../services/PersonalSettings'
+import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
 import { InjectorContext } from './InjectorContext'
-export const PersonalSettingsContext = React.createContext<PersonalSettingType>(defaultSettings)
+export const PersonalSettingsContext = React.createContext(defaultSettings)
 export const PersonalSettingsContextProvider: React.StatelessComponent = props => {
   const di = useContext(InjectorContext)
   const settingsService = di.GetInstance(PersonalSettings)

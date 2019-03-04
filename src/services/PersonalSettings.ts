@@ -2,6 +2,7 @@ import { Injectable } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
+import { PlatformDependent } from '../components/ResponsiveContextProvider'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
@@ -15,16 +16,18 @@ export interface PersonalSettingType {
   }
 }
 
-export const defaultSettings: PersonalSettingType = {
-  theme: 'dark',
-  content: {
-    browseType: 'explorer',
+export const defaultSettings: PlatformDependent<PersonalSettingType> = {
+  default: {
+    theme: 'dark',
+    content: {
+      browseType: 'explorer',
+    },
+    drawer: {
+      enabled: true,
+      items: ['Content'],
+    },
+    commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
   },
-  drawer: {
-    enabled: true,
-    items: ['Content'],
-  },
-  commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
 }
 
 @Injectable()
@@ -50,9 +53,9 @@ export class PersonalSettings {
     return {}
   }
 
-  public currentValue = new ObservableValue<PersonalSettingType>(defaultSettings)
+  public currentValue = new ObservableValue(defaultSettings)
 
-  public async setValue(settings: PersonalSettingType) {
+  public async setValue(settings: PlatformDependent<PersonalSettingType>) {
     this.currentValue.setValue(settings)
     localStorage.setItem(
       `${settingsKey}/${this.repository.authentication.currentUser.getValue().Path}`,

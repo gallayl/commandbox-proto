@@ -21,13 +21,13 @@ ReactDOM.render(
     <InjectorContext.Provider value={new Injector()}>
       <HashRouter>
         <PersonalSettingsContextProvider>
-          <ThemeProvider theme={theme}>
-            <ResponsiveContextProvider>
+          <ResponsiveContextProvider>
+            <ThemeProvider theme={theme}>
               <DesktopLayout>
                 <MainRouter />
-              </DesktopLayout>
-            </ResponsiveContextProvider>
-          </ThemeProvider>
+              </DesktopLayout>{' '}
+            </ThemeProvider>
+          </ResponsiveContextProvider>
         </PersonalSettingsContextProvider>
       </HashRouter>
     </InjectorContext.Provider>

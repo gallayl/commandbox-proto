@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { PersonalSettingsContext } from '../PersonalSettingsContext'
+import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
 import Commander from './Commander'
 import { Explore } from './Explore'
 
 export const Content: React.FunctionComponent = () => {
-  const personalSettings = useContext(PersonalSettingsContext)
+  const personalSettings = useContext(ResponsivePersonalSetttings)
 
   if (personalSettings.content.browseType === 'commander') {
     return <Commander />

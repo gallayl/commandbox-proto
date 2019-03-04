@@ -12,7 +12,7 @@ import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { rootStateType } from '../../store'
 import { toggleDrawer } from '../../store/Drawer'
-import { PersonalSettingsContext } from '../PersonalSettingsContext'
+import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
 import { ThemeContext } from '../ThemeContext'
 
 const mapStateToProps = (state: rootStateType) => ({
@@ -27,7 +27,7 @@ const mapDispatchToProps = {
 const DesktopDrawer: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > = props => {
-  const settings = useContext(PersonalSettingsContext)
+  const settings = useContext(ResponsivePersonalSetttings)
   const theme = useContext(ThemeContext)
 
   if (!settings.drawer.enabled) {

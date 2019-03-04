@@ -1,7 +1,7 @@
 import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import React, { useContext } from 'react'
-import { PersonalSettingsContext } from './PersonalSettingsContext'
+import { ResponsivePersonalSetttings } from './ResponsiveContextProvider'
 import { ThemeContext } from './ThemeContext'
 
 const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
@@ -13,8 +13,8 @@ const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
     },
   })
 
-export const ThemeProviderComponent: React.FunctionComponent<{ theme: ThemeOptions }> = props => {
-  const ps = useContext(PersonalSettingsContext)
+export const ThemeProvider: React.FunctionComponent<{ theme: ThemeOptions }> = props => {
+  const ps = useContext(ResponsivePersonalSetttings)
   const theme = mergeThemes(props.theme, ps.theme)
   return (
     <MuiThemeProvider theme={theme}>
@@ -22,7 +22,3 @@ export const ThemeProviderComponent: React.FunctionComponent<{ theme: ThemeOptio
     </MuiThemeProvider>
   )
 }
-
-const extendedComponent = ThemeProviderComponent
-
-export { extendedComponent as ThemeProvider }
