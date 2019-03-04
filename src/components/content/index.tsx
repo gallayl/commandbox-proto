@@ -1,23 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { PersonalSettings } from '../../services/PersonalSettings'
-import { InjectorContext } from '../InjectorContext'
+import React, { useContext } from 'react'
+import { PersonalSettingsContext } from '../PersonalSettingsContext'
 import Commander from './Commander'
 import { Explore } from './Explore'
 
 export const Content: React.FunctionComponent = () => {
-  const [viewType, setViewType] = useState('')
-  const injector = useContext(InjectorContext)
-  const service = injector.GetInstance(PersonalSettings)
-  useEffect(() => {
-    const subscription = service.currentValue.subscribe(v => {
-      setViewType(v.content.browseType)
-    }, true)
-    return () => subscription.dispose()
-  }, [])
+  const personalSettings = useContext(PersonalSettingsContext)
 
-  if (viewType === 'commander') {
+  if (personalSettings.content.browseType === 'commander') {
     return <Commander />
-  } else if (viewType === 'explorer') {
+  } else if (personalSettings.content.browseType === 'explorer') {
     return <Explore />
   }
   return null

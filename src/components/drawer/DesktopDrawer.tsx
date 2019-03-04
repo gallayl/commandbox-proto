@@ -6,14 +6,13 @@ import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { rootStateType } from '../../store'
 import { toggleDrawer } from '../../store/Drawer'
-import { InjectorContext } from '../InjectorContext'
+import { PersonalSettingsContext } from '../PersonalSettingsContext'
 import { ThemeContext } from '../ThemeContext'
 
 const mapStateToProps = (state: rootStateType) => ({
@@ -28,18 +27,10 @@ const mapDispatchToProps = {
 const DesktopDrawer: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > = props => {
-  const [drawerConfig, setDrawerConfig] = useState(defaultSettings.drawer)
-  const injector = useContext(InjectorContext)
+  const settings = useContext(PersonalSettingsContext)
   const theme = useContext(ThemeContext)
-  const service = injector.GetInstance(PersonalSettings)
-  useEffect(() => {
-    const subscription = service.currentValue.subscribe(v => {
-      setDrawerConfig(v.drawer)
-    }, true)
-    return () => subscription.dispose()
-  }, [])
 
-  if (!drawerConfig.enabled) {
+  if (!settings.drawer.enabled) {
     return null
   }
 
@@ -61,7 +52,7 @@ const DesktopDrawer: React.StatelessComponent<
         }}>
         <div style={{ paddingTop: '1em' }}>
           {props.items
-            .filter(i => drawerConfig.items && drawerConfig.items.indexOf(i.primaryText) !== -1)
+            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.primaryText) !== -1)
             .map(item => {
               const isActive = matchPath(props.location.pathname, item.url)
               return isActive ? (

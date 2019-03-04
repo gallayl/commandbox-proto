@@ -3,7 +3,7 @@ import { Repository } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 
-const settingsKey = `SN-ADMIN-USER-SETTINGS`
+const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface PersonalSettingType {
   theme: 'dark' | 'light'

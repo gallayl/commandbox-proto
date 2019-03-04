@@ -5,15 +5,14 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { LoginState } from '@sensenet/client-core'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/sensenet-icon-32.png'
-import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { rootStateType } from '../../store'
 import { logoutFromRepository } from '../../store/Session'
 import { CommandPalette } from '../command-palette/CommandPalette'
-import { InjectorContext } from '../InjectorContext'
+import { PersonalSettingsContext } from '../PersonalSettingsContext'
 import { ThemeContext } from '../ThemeContext'
 import { UserAvatar } from '../UserAvatar'
 
@@ -30,16 +29,8 @@ const mapDispatchToProps = {
 const DesktopAppBar: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > = props => {
-  const injector = useContext(InjectorContext)
   const theme = useContext(ThemeContext)
-  const [commandPaletteConfig, setCommandPaletteConfig] = useState(defaultSettings.commandPalette)
-  const service = injector.GetInstance(PersonalSettings)
-  useEffect(() => {
-    const subscription = service.currentValue.subscribe(v => {
-      setCommandPaletteConfig(v.commandPalette)
-    }, true)
-    return () => subscription.dispose()
-  })
+  const personalSettings = useContext(PersonalSettingsContext)
 
   return (
     <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>
@@ -50,7 +41,7 @@ const DesktopAppBar: React.StatelessComponent<
             SENSENET
           </Typography>
         </a>
-        {commandPaletteConfig.enabled ? <CommandPalette /> : <div style={{ flex: 1 }} />}
+        {personalSettings.commandPalette.enabled ? <CommandPalette /> : <div style={{ flex: 1 }} />}
 
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <Tooltip placement="bottom" title={props.user.DisplayName || props.user.Name}>

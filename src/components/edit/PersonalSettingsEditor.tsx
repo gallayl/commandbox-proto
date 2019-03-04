@@ -1,25 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import '../../services/MonacoModels/PersonalSettingsModel'
 import { PersonalSettings } from '../../services/PersonalSettings'
 import { InjectorContext } from '../InjectorContext'
+import { PersonalSettingsContext } from '../PersonalSettingsContext'
 import { TextEditor } from './TextEditor'
 
 const SettingsEditor: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
   const service = injector.GetInstance(PersonalSettings)
-  const [settingsValue, setSettingsValue] = useState(JSON.stringify(service.currentValue.getValue(), undefined, 4))
-
-  useEffect(() => {
-    const subscription = service.currentValue.subscribe(v => {
-      setSettingsValue(JSON.stringify(v, undefined, 4))
-    }, true)
-    return () => subscription.dispose()
-  }, [])
+  const settings = useContext(PersonalSettingsContext)
 
   return (
     <TextEditor
       content={{ Type: 'Settings', Name: 'PersonalSettings' } as any}
-      loadContent={async () => settingsValue}
+      loadContent={async () => JSON.stringify(settings, undefined, 3)}
       saveContent={async (_c, v) => {
         try {
           service.setValue(JSON.parse(v))

@@ -1,8 +1,7 @@
 import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import React, { useContext, useEffect, useState } from 'react'
-import { PersonalSettings } from '../services/PersonalSettings'
-import { InjectorContext } from './InjectorContext'
+import React, { useContext } from 'react'
+import { PersonalSettingsContext } from './PersonalSettingsContext'
 import { ThemeContext } from './ThemeContext'
 
 const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
@@ -15,21 +14,8 @@ const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
   })
 
 export const ThemeProviderComponent: React.FunctionComponent<{ theme: ThemeOptions }> = props => {
-  const injector = useContext(InjectorContext)
-  const ps = injector.GetInstance(PersonalSettings)
-  const [themeType, setThemeType] = useState(ps.currentValue.getValue().theme)
-  const [theme, setTheme] = useState(mergeThemes(props.theme, themeType))
-
-  useEffect(() => {
-    const subscription = ps.currentValue.subscribe(v => {
-      setThemeType(v.theme)
-      setTheme(mergeThemes(props.theme, v.theme))
-    })
-    return () => {
-      subscription.dispose()
-    }
-  }, [themeType])
-
+  const ps = useContext(PersonalSettingsContext)
+  const theme = mergeThemes(props.theme, ps.theme)
   return (
     <MuiThemeProvider theme={theme}>
       <ThemeContext.Provider value={theme}>{props.children}</ThemeContext.Provider>
