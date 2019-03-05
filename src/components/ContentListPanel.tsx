@@ -203,11 +203,14 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
                   return <TableCell padding={'none'}>{options.content.DisplayName || options.content.Name}</TableCell>
                 case 'CreatedBy':
                   return options.content.CreatedBy ? (
-                    <TableCell padding={'none'} style={{ display: 'flex', alignItems: 'center' }}>
-                      <Icon item={options.content.CreatedBy as GenericContent} />
-                      <div style={{ marginLeft: '1em' }}>
-                        {(options.content.CreatedBy as GenericContent).DisplayName ||
-                          (options.content.CreatedBy as GenericContent).Name}
+                    <TableCell padding={'none'}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {' '}
+                        <Icon item={options.content.CreatedBy as GenericContent} />
+                        <div style={{ marginLeft: '1em' }}>
+                          {(options.content.CreatedBy as GenericContent).DisplayName ||
+                            (options.content.CreatedBy as GenericContent).Name}
+                        </div>
                       </div>
                     </TableCell>
                   ) : null

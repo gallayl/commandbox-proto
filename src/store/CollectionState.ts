@@ -10,6 +10,9 @@ export interface CollectionStateOptions<TStoreType> {
   defaultParent?: GenericContent
   defaultChildren?: GenericContent[]
   defaultAncestors?: GenericContent[]
+  parentLoadOptions?: ODataParams<GenericContent>
+  childrenLoadOptions?: ODataParams<GenericContent>
+  ancestorsLoadOptions?: ODataParams<GenericContent>
   getSelfState: (state: TStoreType) => CollectionStateType
 }
 
@@ -20,12 +23,19 @@ export interface CollectionStateType {
   activeContent: GenericContent
   children: GenericContent[]
   ancestors: GenericContent[]
-  parentLoadOptions: ODataParams<GenericContent>
-  childrenLoadOptions: ODataParams<GenericContent>
-  ancestorsLoadOptions: ODataParams<GenericContent>
 }
 
 export const createCollectionState = <TStateType>(collectionOptions: CollectionStateOptions<TStateType>) => {
+  const parentLoadOptions: ODataParams<GenericContent> = collectionOptions.parentLoadOptions || {}
+  const childrenLoadOptions: ODataParams<GenericContent> = collectionOptions.childrenLoadOptions || {
+    orderby: [['IsFolder', 'desc']],
+    select: 'all',
+    expand: 'CreatedBy',
+  }
+  const ancestorsLoadOptions: ODataParams<GenericContent> = collectionOptions.ancestorsLoadOptions || {
+    orderby: [['Path', 'asc']],
+  }
+
   const loadLock = new Semaphore(1)
   const loadParent = createAction((id: number) => ({
     type: `${collectionOptions.prefix}_SET_PARENT`,
@@ -47,7 +57,7 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
           if (!fromChildren) {
             const parentResponse = await repo.load({
               idOrPath: id,
-              oDataOptions: currentState.parentLoadOptions,
+              oDataOptions: parentLoadOptions,
             })
             parent = parentResponse.d
           } else {
@@ -57,7 +67,7 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
 
         const childrenPromise = repo.loadCollection({
           path: parent.Path,
-          oDataOptions: currentState.childrenLoadOptions,
+          oDataOptions: { ...childrenLoadOptions },
         })
 
         let ancestorsPromise!: Promise<ODataCollectionResponse<GenericContent>>
@@ -83,7 +93,7 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
             method: 'GET',
             name: 'Ancestors',
             body: undefined,
-            oDataOptions: currentState.ancestorsLoadOptions,
+            oDataOptions: ancestorsLoadOptions,
           })
         }
 
@@ -120,9 +130,6 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
     children: [],
     ancestors: [],
     selected: [],
-    parentLoadOptions: {},
-    childrenLoadOptions: { orderby: [['IsFolder', 'desc']], select: 'all' },
-    ancestorsLoadOptions: { orderby: [['Path', 'asc']] },
     activeContent: {} as any,
   }
 
