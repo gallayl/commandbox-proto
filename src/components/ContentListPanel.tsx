@@ -9,6 +9,7 @@ import { ContentContextProvider } from '../services/ContentContextProvider'
 import { rootStateType } from '../store'
 import { createCollectionState } from '../store/CollectionState'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { Icon } from './Icon'
 import { InjectorContext } from './InjectorContext'
 import { SelectionControl } from './SelectionControl'
 
@@ -200,10 +201,20 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
               switch (options.field) {
                 case 'DisplayName':
                   return <TableCell padding={'none'}>{options.content.DisplayName || options.content.Name}</TableCell>
+                case 'CreatedBy':
+                  return options.content.CreatedBy ? (
+                    <TableCell padding={'none'} style={{ display: 'flex', alignItems: 'center' }}>
+                      <Icon item={options.content.CreatedBy as GenericContent} />
+                      <div style={{ marginLeft: '1em' }}>
+                        {(options.content.CreatedBy as GenericContent).DisplayName ||
+                          (options.content.CreatedBy as GenericContent).Name}
+                      </div>
+                    </TableCell>
+                  ) : null
               }
               return null
             }}
-            fieldsToDisplay={['DisplayName', 'CreatedBy', 'CreationDate']}
+            fieldsToDisplay={['DisplayName', 'CreatedBy']}
             selected={selected}
             onRequestSelectionChange={select}
             icons={{}}
