@@ -15,6 +15,7 @@ export interface TreeProps {
   onItemClick?: (item: GenericContent) => void
   activeItemId?: number
   loadOptions?: ODataParams<GenericContent>
+  style?: React.CSSProperties
 }
 
 export const mapStateToProps = (state: rootStateType) => ({
@@ -42,7 +43,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   }, [])
 
   return (
-    <div>
+    <div style={props.style}>
       <List dense={true}>
         {items.map(content => {
           const isOpened = opened.includes(content.Id)

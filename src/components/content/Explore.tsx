@@ -17,6 +17,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <Tree
+        style={{ flexGrow: 1, flexShrink: 0, borderRight: '1px solid rgba(128,128,128,.2)', overflow: 'auto' }}
         parentPath={ConstantContent.PORTAL_ROOT.Path}
         onItemClick={item => setLeftParentId(item.Id)}
         activeItemId={leftParentId}
@@ -25,7 +26,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
         onActivateItem={item => {
           props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
         }}
-        style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
+        style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
         onParentChange={p => {
           setLeftParentId(p.Id)
         }}
