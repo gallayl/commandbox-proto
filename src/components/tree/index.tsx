@@ -12,6 +12,7 @@ import { InjectorContext } from '../InjectorContext'
 
 export interface TreeProps {
   parentPath: string
+  ancestorPaths?: string[]
   onItemClick?: (item: GenericContent) => void
   activeItemId?: number
   loadOptions?: ODataParams<GenericContent>
@@ -46,7 +47,8 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
     <div style={props.style}>
       <List dense={true}>
         {items.map(content => {
-          const isOpened = opened.includes(content.Id)
+          const isOpened =
+            opened.includes(content.Id) || (props.ancestorPaths && props.ancestorPaths.includes(content.Path))
           return (
             <div key={content.Id}>
               <ListItem
@@ -65,7 +67,12 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
               </ListItem>
               <Collapse style={{ marginLeft: '1em' }} in={isOpened} timeout="auto" unmountOnExit={true}>
                 {isOpened ? (
-                  <Tree parentPath={content.Path} onItemClick={props.onItemClick} activeItemId={props.activeItemId} />
+                  <Tree
+                    parentPath={content.Path}
+                    onItemClick={props.onItemClick}
+                    activeItemId={props.activeItemId}
+                    ancestorPaths={props.ancestorPaths}
+                  />
                 ) : null}
               </Collapse>
             </div>
